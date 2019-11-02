@@ -1,0 +1,125 @@
+%
+% File acl2017.tex
+%
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{acl2017}
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage{url}
+
+%\aclfinalcopy % Uncomment this line for the final submission
+%\def\aclpaperid{***} %  Enter the acl Paper ID here
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B{\sc ib}\TeX}
+
+\title{CMPUT 497 Project Draft Report: \\ RAKE - Key Word Extraction Replication}
+
+\author{Shouyang Zhou \\
+  University of Alberta \\
+  Edmonton, Alberta, Canada \\
+  {\tt shoyang@ualberta.ca} \\\And
+  Sharon Hains \\
+  University of Alberta \\
+  Edmonton, Alberta, Canada \\
+  {\tt hains@ualberta.ca} \\\And
+  Sharif Bakouny \\
+  University of Alberta \\
+  Edmonton, Alberta, Canada \\
+  {\tt albakoun@ualberta.ca} \\}
+
+
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  This document contains the instructions for preparing a camera-ready
+  manuscript for the proceedings of ACL-2017. The document itself
+  conforms to its own specifications, and is therefore an example of
+  what your manuscript should look like. These instructions should be
+  used for both papers submitted for review and for final versions of
+  accepted papers.  Authors are asked to conform to all the directions
+  reported in this document.
+\end{abstract}
+
+\section{Introduction}
+
+We aim to replicate a 2010 paper detailing a text mining method titled RAKE – Rapid Automatic Keyword Extraction. Keyword extraction is the automated process of extracting important words and phrases from a document. This paper devises a new method for keyword extraction and compares the method to a baseline method in two circumstances, u-ing scientific abstracts, and news articles. The importance of keyword extraction is shown over its wide domain of application. It has many applications in information retrieval, feature engineering, and assistive technologies.  It is also applied in search engines and classification technologies. At its most basic level, keyword extraction is important because it helps humans process unstructured data in a more efficient and digestible manner.
+
+We will be using the dataset used in RAKE as our input, which is a set of abstracts, and processing the data. Our output will be a generation of keywords extracted from this set of abstracts. We will be comparing the number of correct keywords to extracted keywords, to determine how accurate our replication is to the original paper. 
+
+\section{Related Work}
+
+The original paper “Automatic Keyword Extraction from Individual Documents” by Rose et al. [1] is the primary work of interest. As mentioned previously, they demonstrate their method and compare it with text rank on two datasets. We note that there are existing implementations of RAKE and TextRank in Python 3 [2][3].
+
+\section{Implementation}
+
+We aim to implement RAKE and an evaluation framework so to reproduce the results from the paper. For example, the first evaluation Rose et all proposes compares RAKE and TextRank variants on a corpus of scientific abstracts, comparing accuracy as a measure of precision and recall over 500 abstracts. In this case, our implementation would be the RAKE algorithm, and an aggregation process to feed in and mark individual abstracts and in the end summarize its performance.
+
+We note that implementing a research method from scratch poses a risk. As an undergraduate team, this process is unfamiliar and unguided. Since there are existing implementa-tions available, we may be able to establish a control for this. A third-party variant [2] can act as a baseline of testing and could also be ran in the evaluation for another source of comparison.  
+
+Rose et al. [1] reference four datasets which are needed for this evaluation. RAKE requires a stop list of words to function, they evaluate RAKE using two stop lists, Fox and KA. RAKE is compared on two datasets, one about technical abstracts from a referenced study, and the MPQA Corpus. Upon inspection, the two stop lists are readily available (they provide KA, [4]). The MPQA dataset is also available. [5]
+
+\subsection {Pseudo Code}
+This is to do.
+
+\section{Evaluation}
+
+The first evaluation compares RAKE and Text Rank in the keyword extraction of technical abstracts using metrics such as precision and recall. There are also some miscellaneous methods they consider (Ngram, Np chunks, pattern). We will focus on the main comparison of RAKE and TextRank. As technical papers provide their keywords, there is an estab-lished baseline for comparison within this da-taset.
+
+The second evaluation Rose et al. lists is an open exploration of the key words extracted from the MPQA Corpus of news articles. They examine the keywords selected across the en-tire corpus looking for variation and prece-dence of terms.   
+
+There are a couple of possible extensions. Rose et al. notes that they use a subset of their technical paper dataset (500 of ~1500 ab-stracts).  We could compare upon a different sample from the dataset. Further, since the second evaluation is open ended, it may be possible to replicate Rose et al.’s methodology upon another dataset.
+
+
+\section{Remaining Work}
+
+We have collected the referenced datasets and created a method in calculating and retrieving the key words of each abstract. We have yet to write any code for this project.
+
+\textbf{Please do not use anonymous citations} and do not include
+acknowledgements when submitting your papers. Papers that do not
+conform to these requirements may be rejected without review.
+
+\textbf{References}: Gather the full set of references together under
+the heading {\bf References}; place the section before any Appendices,
+unless they contain references. Arrange the references alphabetically
+by first author, rather than by order of occurrence in the text.
+Provide as complete a citation as possible, using a consistent format,
+such as the one for {\em Computational Linguistics\/} or the one in the 
+{\em Publication Manual of the American 
+Psychological Association\/}~\cite{APA:83}.  Use of full names for
+authors rather than initials is preferred.  A list of abbreviations
+for common computer science journals can be found in the ACM 
+{\em Computing Reviews\/}~\cite{ACM:83}.
+
+The \LaTeX{} and Bib\TeX{} style files provided roughly fit the
+American Psychological Association format, allowing regular citations, 
+short citations and multiple citations as described above.
+
+% include your own bib file like this:
+%\bibliographystyle{acl}
+%\bibliography{acl2017}
+\bibliography{acl2017}
+\bibliographystyle{acl_natbib}
+
+\appendix
+
+
+
+\end{document}
