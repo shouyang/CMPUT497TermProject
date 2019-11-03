@@ -48,15 +48,6 @@
 
 \begin{document}
 \maketitle
-\begin{abstract}
-  This document contains the instructions for preparing a camera-ready
-  manuscript for the proceedings of ACL-2017. The document itself
-  conforms to its own specifications, and is therefore an example of
-  what your manuscript should look like. These instructions should be
-  used for both papers submitted for review and for final versions of
-  accepted papers.  Authors are asked to conform to all the directions
-  reported in this document.
-\end{abstract}
 
 \section{Introduction}
 
@@ -66,7 +57,29 @@ We will be using the dataset used in RAKE as our input, which is a set of abstra
 
 \section{Related Work}
 
-The original paper “Automatic Keyword Extraction from Individual Documents” by \citet{1} is the primary work of interest. As mentioned previously, they demonstrate their method and compare it with text rank on two datasets. We note that there are existing implementations of RAKE and TextRank in Python 3 (\citet{2},\citet{3}).
+The original paper “Automatic Keyword Extraction from Individual Documents” by \citet{1} is the primary work of interest. As mentioned previously, they demonstrate their method and compare it with TextRank on two datasets. We note that there are existing implementations of RAKE and TextRank in Python 3 (\citet{2}, \citet{3}).
+
+RAKE stands for 'Rapid Automatic Keyword Extraction', and extracts keywords based on the occurence of certain words \citep{1}. The way it works is that content words, a set of phrase and word delimiters, and list of stop words are taken in. Stop words are dropped from being included in the content words, as they are usually uninformative or meaningless. Stop words can include punctuation, numbers, conjuctions, and more. 
+
+To implement the RAKE algorithm, it goes as follows:
+
+\begin{enumerate}
+\item Split the text into an array of words using the word delimiters.
+\item Split the array into sequences contiguous words using stop words and phrase delimiters.
+\item Candidate keywords are words in a sequence that are assigned the same position in the text. 
+\item Assign scores to each keyword candidate using ration of degree to frequency. 
+\item Keywords that contain stop words:
+\begin{enumerate}
+\item A pair of candidate keywords must be adjoind at least twice in the text in the same order.
+\item Create a new keyword which contains the pair of keywords with interior stopwords between them.
+\item The new keyword’s score is the sum of the scores of its keywords components.
+\end{enumerate}
+\item The keywords of the text are the top T keywords from the keyword candidates list.
+\end{enumerate}
+
+\citet{1} also develops a method for stoplist generation, where they use document frequency, keyword frequency (how many times the word appears in the keywords set) and adjacency frequency (how many times the word appears adjacent to a keyword). Using only term frequency risks adding content bearing words to the stoplist, so adjacency frequency was used. However, words that appear more often in the keywords list than adjacent to keywords are excluded from the stoplist.   
+
+In evaluating RAKE, no training sets are used because RAKE is unsupervised learning algorithm. Precision, Recall and F-Measure were used for evaluating the results. The results of RAKE were compared with the results of testing the same set of texts using TextRank and Supervised Learning (Hulth 2003). Perfect precision is not possible with any of the techniques because some of the manually assigned keywords might not appear in the text. The performance of RAKE depends on the stoplist that was used. The best precision, F-measure and a comparable recall can be achieved by using the keyword adjacency stoplist. Using Fox’s stoplist yields high recall and low precision. RAKE outperforms all previously used keyword extraction algorithms in precision, efficiency and simplicity.
 
 To go into more detail about TextRank, \citet{4} discusses how TextRank is a graph-based ranking algorithm, where the importance of a vertex is decided by considering global information recursively computed from the entire graph. Implementing this algorithm goes as follows:
 
@@ -92,7 +105,7 @@ This is to do.
 
 The first evaluation compares RAKE and Text Rank in the keyword extraction of technical abstracts using metrics such as precision and recall. There are also some miscellaneous methods they consider (Ngram, Np chunks, pattern). We will focus on the main comparison of RAKE and TextRank. As technical papers provide their keywords, there is an established baseline for comparison within this dataset.
 
-The second evaluation \citet{1} lists is an open exploration of the key words extracted from the MPQA Corpus of news articles. They examine the keywords selected across the en-tire corpus looking for variation and precedence of terms.   
+The second evaluation \citet{1} lists is an open exploration of the key words extracted from the MPQA Corpus of news articles. They examine the keywords selected across the entire corpus looking for variation and precedence of terms.   
 
 There are a couple of possible extensions. \citet{1} notes that they use a subset of their technical paper dataset (500 of ~1500 abstracts).  We could compare upon a different sample from the dataset. Further, since the second evaluation is open ended, it may be possible to replicate \citeapos{1} methodology upon another dataset.
 
@@ -118,7 +131,7 @@ Complete report writing & Dec 6 & All  \\
 \end{center}
 \end{table}
 
-
+As for the distribution of work currently completed, Shouyang has created the code for our pre-processing of our data sets. Sharif summarized the papers in the Related Works section. Sharon formatted this paper. We all had a hand in writing this draft of the report. 
 
 % include your own bib file like this:
 %\bibliographystyle{acl}
