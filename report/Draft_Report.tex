@@ -60,19 +60,20 @@
 
 \section{Introduction}
 
-We aim to replicate a 2010 paper detailing a text mining method titled RAKE – Rapid Automatic Keyword Extraction. Keyword extraction is the automated process of extracting important words and phrases from a document. This paper devises a new method for keyword extraction and compares the method to a baseline method in two circumstances, u-ing scientific abstracts, and news articles. The importance of keyword extraction is shown over its wide domain of application. It has many applications in information retrieval, feature engineering, and assistive technologies.  It is also applied in search engines and classification technologies. At its most basic level, keyword extraction is important because it helps humans process unstructured data in a more efficient and digestible manner.
+We aim to replicate a 2010 paper detailing a text mining method titled RAKE – Rapid Automatic Keyword Extraction. Keyword extraction is the automated process of extracting important words and phrases from a document. This paper devises a new method for keyword extraction and compares the method to a baseline method in two circumstances, u-ing scientific abstracts, and news articles. The importance of keyword extraction is shown over its wide domain of application. It has many applications in information retrieval, feature engineering, and assistive technologies.  It is also applied in search engines and classification technologies. At its most basic level, it helps humans process unstructured data in a more efficient and digestible manner. The importance of this replication study is to verify the results of Rose et al., so we can be more confident in using RAKE as keyword extraction method. Confirming the results of RAKE testing is relevant as keyword extraction is a widely used application. 
 
 We will be using the dataset used in RAKE as our input, which is a set of abstracts, and processing the data. Our output will be a generation of keywords extracted from this set of abstracts. We will be comparing the number of correct keywords to extracted keywords, to determine how accurate our replication is to the original paper. 
 
 \section{Related Work}
 
-The original paper “Automatic Keyword Extraction from Individual Documents” by Rose et al. [1] is the primary work of interest. As mentioned previously, they demonstrate their method and compare it with text rank on two datasets. We note that there are existing implementations of RAKE and TextRank in Python 3 [2][3].
+The original paper “Automatic Keyword Extraction from Individual Documents” by Rose et al. [1] is the primary work of interest. As mentioned previously, they demonstrate their method and compare it with text rank on two datasets. These data We note that there are existing implementations of RAKE and TextRank in Python 3 [2][3].
+
+To go into more detail, Rose et al. discuss 
 
 \section{Implementation}
 
-We aim to implement RAKE and an evaluation framework so to reproduce the results from the paper. For example, the first evaluation Rose et all proposes compares RAKE and TextRank variants on a corpus of scientific abstracts, comparing accuracy as a measure of precision and recall over 500 abstracts. In this case, our implementation would be the RAKE algorithm, and an aggregation process to feed in and mark individual abstracts and in the end summarize its performance.
+We aim to implement RAKE and Textrank using existing Python modules. We will then create an evaluation framework to reproduce the results from the paper. For example, the first evaluation Rose et al. proposes compares RAKE and TextRank variants on a corpus of scientific abstracts, comparing accuracy as a measure of precision and recall over 500 abstracts. In this case, our implementation would be using the existing Python implementation of the RAKE algorithm, and an aggregation process to feed in and mark individual abstracts and in the end summarize its performance.
 
-We note that implementing a research method from scratch poses a risk. As an undergraduate team, this process is unfamiliar and unguided. Since there are existing implementa-tions available, we may be able to establish a control for this. A third-party variant [2] can act as a baseline of testing and could also be ran in the evaluation for another source of comparison.  
 
 Rose et al. [1] reference four datasets which are needed for this evaluation. RAKE requires a stop list of words to function, they evaluate RAKE using two stop lists, Fox and KA. RAKE is compared on two datasets, one about technical abstracts from a referenced study, and the MPQA Corpus. Upon inspection, the two stop lists are readily available (they provide KA, [4]). The MPQA dataset is also available. [5]
 
