@@ -60,66 +60,72 @@
 
 \section{Introduction}
 
-We aim to replicate a 2010 paper detailing a text mining method titled RAKE – Rapid Automatic Keyword Extraction. Keyword extraction is the automated process of extracting important words and phrases from a document. This paper devises a new method for keyword extraction and compares the method to a baseline method in two circumstances, u-ing scientific abstracts, and news articles. The importance of keyword extraction is shown over its wide domain of application. It has many applications in information retrieval, feature engineering, and assistive technologies.  It is also applied in search engines and classification technologies. At its most basic level, it helps humans process unstructured data in a more efficient and digestible manner. The importance of this replication study is to verify the results of Rose et al., so we can be more confident in using RAKE as keyword extraction method. Confirming the results of RAKE testing is relevant as keyword extraction is a widely used application. 
+We aim to replicate a 2010 paper detailing a text mining method titled RAKE – Rapid Automatic Keyword Extraction. Keyword extraction is the automated process of extracting important words and phrases from a document. This paper devises a new method for keyword extraction and compares the method to a baseline method in two circumstances, using scientific abstracts, and news articles. The importance of keyword extraction is shown over its wide domain of application. It has many applications in information retrieval, feature engineering, and assistive technologies.  It is also applied in search engines and classification technologies. At its most basic level, it helps humans process unstructured data in a more efficient and digestible manner. The importance of this replication study is to verify the results of \citet{1}, so we can be more confident in using RAKE as keyword extraction method. Confirming the results of RAKE testing is relevant as keyword extraction is a widely used application as discussed above. 
 
 We will be using the dataset used in RAKE as our input, which is a set of abstracts, and processing the data. Our output will be a generation of keywords extracted from this set of abstracts. We will be comparing the number of correct keywords to extracted keywords, to determine how accurate our replication is to the original paper. 
 
 \section{Related Work}
 
-The original paper “Automatic Keyword Extraction from Individual Documents” by Rose et al. [1] is the primary work of interest. As mentioned previously, they demonstrate their method and compare it with text rank on two datasets. These data We note that there are existing implementations of RAKE and TextRank in Python 3 [2][3].
+The original paper “Automatic Keyword Extraction from Individual Documents” by \citet{1} is the primary work of interest. As mentioned previously, they demonstrate their method and compare it with text rank on two datasets. We note that there are existing implementations of RAKE and TextRank in Python 3 (\citet{2},\citet{3}).
 
-To go into more detail, Rose et al. discuss 
+To go into more detail about TextRank, \citet{4} discusses how TextRank is a graph-based ranking algorithm, where the importance of a vertex is decided by considering global information recursively computed from the entire graph. Implementing this algorithm goes as follows:
+
+\begin{enumerate}
+\item Identify text units and add them as vertices to the graph.
+\item Edges of the graph are relations between text units.
+\item Iterate the algorithm until convergence below a given threshold. 
+\item Rank vertices based on their final scores (values).
+\end{enumerate}   
+
+Evaluating TextRank, the results were compared with the uncontrolled set of keywords (Freely assigned by the indexers and unrestricted to a given dictionary). Precision, recall and F-measure were used for evaluation. Best performance is achieved with smaller window, a filter that only considers Nouns and Adjectives when pre-processing the text, and when the testing was on undirected graphs (no direction of the relation between the text units). The results obtained by TextRank were higher than all previously proposed systems. However, RAKE algorithm was not used and the results were not compared to RAKE’s results.
 
 \section{Implementation}
 
-We aim to implement RAKE and Textrank using existing Python modules. We will then create an evaluation framework to reproduce the results from the paper. For example, the first evaluation Rose et al. proposes compares RAKE and TextRank variants on a corpus of scientific abstracts, comparing accuracy as a measure of precision and recall over 500 abstracts. In this case, our implementation would be using the existing Python implementation of the RAKE algorithm, and an aggregation process to feed in and mark individual abstracts and in the end summarize its performance.
+We aim to implement RAKE and Textrank using existing Python modules. We will then create an evaluation framework to reproduce the results from the paper. For example, the first evaluation \citet{1} proposes compares RAKE and TextRank variants on a corpus of scientific abstracts, comparing accuracy as a measure of precision and recall over 500 abstracts. In this case, our implementation would be using the existing Python implementation of the RAKE algorithm, and an aggregation process to feed in and mark individual abstracts and in the end summarize its performance.
 
-
-Rose et al. [1] reference four datasets which are needed for this evaluation. RAKE requires a stop list of words to function, they evaluate RAKE using two stop lists, Fox and KA. RAKE is compared on two datasets, one about technical abstracts from a referenced study, and the MPQA Corpus. Upon inspection, the two stop lists are readily available (they provide KA, [4]). The MPQA dataset is also available. [5]
+\citet{1} reference four datasets which are needed for this evaluation. RAKE requires a stop list of words to function, they evaluate RAKE using two stop lists, Fox and KA. RAKE is compared on two datasets, one about technical abstracts from a referenced study, and the MPQA Corpus. Upon inspection, the two stop lists are readily available (they provide KA, [4]). The MPQA dataset is also available. [5]
 
 \subsection {Pseudo Code}
 This is to do.
 
 \section{Evaluation}
 
-The first evaluation compares RAKE and Text Rank in the keyword extraction of technical abstracts using metrics such as precision and recall. There are also some miscellaneous methods they consider (Ngram, Np chunks, pattern). We will focus on the main comparison of RAKE and TextRank. As technical papers provide their keywords, there is an estab-lished baseline for comparison within this da-taset.
+The first evaluation compares RAKE and Text Rank in the keyword extraction of technical abstracts using metrics such as precision and recall. There are also some miscellaneous methods they consider (Ngram, Np chunks, pattern). We will focus on the main comparison of RAKE and TextRank. As technical papers provide their keywords, there is an established baseline for comparison within this dataset.
 
-The second evaluation Rose et al. lists is an open exploration of the key words extracted from the MPQA Corpus of news articles. They examine the keywords selected across the en-tire corpus looking for variation and prece-dence of terms.   
+The second evaluation \citet{1} lists is an open exploration of the key words extracted from the MPQA Corpus of news articles. They examine the keywords selected across the en-tire corpus looking for variation and precedence of terms.   
 
-There are a couple of possible extensions. Rose et al. notes that they use a subset of their technical paper dataset (500 of ~1500 ab-stracts).  We could compare upon a different sample from the dataset. Further, since the second evaluation is open ended, it may be possible to replicate Rose et al.’s methodology upon another dataset.
+There are a couple of possible extensions. \citet{1} notes that they use a subset of their technical paper dataset (500 of ~1500 abstracts).  We could compare upon a different sample from the dataset. Further, since the second evaluation is open ended, it may be possible to replicate \citeapos{1} methodology upon another dataset.
 
 
 \section{Remaining Work}
 
-We have collected the referenced datasets and created a method in calculating and retrieving the key words of each abstract. We have yet to write any code for this project.
+We have collected the referenced datasets and mapped out pseudo code, as mentioned above in our Implementation section, to obtain the key words of each abstract. We have also begun pre-processing our datasets to allow for keyword extraction. We still need to write the code based off of our pseudo code, extract the keywords from our data sets, evaluate the results from the keyword extraction, and discuss the results in our report. The schedule for our remaining work goes as follows:
 
-\textbf{Please do not use anonymous citations} and do not include
-acknowledgements when submitting your papers. Papers that do not
-conform to these requirements may be rejected without review.
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|p{3.3cm}|p{1.4cm}|p{1.7cm}|}
+\hline \bf Task & \bf Target Date & \bf Person  Responsible \\  
+\hline
+ Create code to extract keywords & Nov 13 & All \\ 
+\hline 
+ Extract keywords from datasets & Nov 17 & All \\
+\hline
+ Evaluate results & Nov 24 & All \\
+\hline
+Complete report writing & Dec 6 & All  \\
+\hline   
+\end{tabular}
+\end{center}
+\end{table}
 
-\textbf{References}: Gather the full set of references together under
-the heading {\bf References}; place the section before any Appendices,
-unless they contain references. Arrange the references alphabetically
-by first author, rather than by order of occurrence in the text.
-Provide as complete a citation as possible, using a consistent format,
-such as the one for {\em Computational Linguistics\/} or the one in the 
-{\em Publication Manual of the American 
-Psychological Association\/}~\cite{APA:83}.  Use of full names for
-authors rather than initials is preferred.  A list of abbreviations
-for common computer science journals can be found in the ACM 
-{\em Computing Reviews\/}~\cite{ACM:83}.
 
-The \LaTeX{} and Bib\TeX{} style files provided roughly fit the
-American Psychological Association format, allowing regular citations, 
-short citations and multiple citations as described above.
 
 % include your own bib file like this:
 %\bibliographystyle{acl}
 %\bibliography{acl2017}
-\bibliography{acl2017}
+\bibliography{report}
 \bibliographystyle{acl_natbib}
 
-\appendix
 
 
 
