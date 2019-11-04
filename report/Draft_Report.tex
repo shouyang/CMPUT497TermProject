@@ -51,36 +51,40 @@
 
 \section{Introduction}
 
-We aim to replicate a 2010 paper detailing a text mining method titled RAKE – Rapid Automatic Keyword Extraction. Keyword extraction is the automated process of extracting important words and phrases from a document. This paper devises a new method for keyword extraction and compares the method to a baseline method in two circumstances, using scientific abstracts, and news articles. The importance of keyword extraction is shown over its wide domain of application. It has many applications in information retrieval, feature engineering, and assistive technologies.  It is also applied in search engines and classification technologies. At its most basic level, it helps humans process unstructured data in a more efficient and digestible manner. The importance of this replication study is to verify the results of \citet{1}, so we can be more confident in using RAKE as keyword extraction method. Confirming the results of RAKE testing is relevant as keyword extraction is a widely used application as discussed above. 
+We aim to replicate the main evaluation from the article "Automatic Keyword Extraction from Individual Documents" by Rose et all. This paper devises an unsupervised method for keyword extraction titled "RAKE" and compares it to a previous well performing unsupervised method called "TextRank". Details to follow in the evaluation section.
 
-We will be using the dataset used in RAKE as our input, which is a set of abstracts, and processing the data. Our output will be a generation of keywords extracted from this set of abstracts. We will be comparing the number of correct keywords to extracted keywords, to determine how accurate our replication is to the original paper. 
+Keyword extraction is the automated process of extracting important words and phrases from a document. The importance of keyword extraction is in application, in information retrieval, feature engineering, and augmenting human classification tasks. At its most basic level, it helps humans process unstructured data in a more efficient and digestible manner. The importance of this replication study is to verify the results of \citet{1}, so we can be more confident in using RAKE as keyword extraction method. Confirming the results of RAKE testing is relevant as keyword extraction is a widely used application as discussed above. 
+
+\subsection{Input-Output}
+
+The overarching output will be a table in the form of Table 1.2 in \citet{1}, please see the appendix for details. This will be a table comparing the performance of RAKE and TextRank variants (parameters) listing the metrics: extracted keywords (total, mean), correct keywords (total, mean), precision, recall, f-measure summarizing the replication-evaluation.
+
+The unit output per trial will be a simple experiment comparing the keywords extracted by RAKE and TextRank variants by correctly extracted keywords, correct keywords, precision, recall, and f-measure over an input text and input sequence of "truth/reference" keywords. 
 
 \section{Related Work}
 
-The original paper “Automatic Keyword Extraction from Individual Documents” by \citet{1} is the primary work of interest. As mentioned previously, they demonstrate their method and compare it with TextRank on two datasets. We note that there are existing implementations of RAKE and TextRank in Python 3 (\citet{2}, \citet{3}).
+The original paper “Automatic Keyword Extraction from Individual Documents” by \citet{1} is the primary work of interest. As mentioned, they evaluate their method "RAKE" and compare it with "TextRank" over two datasets. RAKE requires a set of phrase and content-word delimiters called a stoplist, a list of stopwords. Stop words are punctuation, numbers, conjuctions, and user specified terms which are used to delimit candidate keyword/phrases. 
 
-RAKE stands for 'Rapid Automatic Keyword Extraction', and extracts keywords based on the occurence of certain words \citep{1}. The way it works is that content words, a set of phrase and word delimiters, and list of stop words are taken in. Stop words are dropped from being included in the content words, as they are usually uninformative or meaningless. Stop words can include punctuation, numbers, conjuctions, and more. 
-
-To implement the RAKE algorithm, it goes as follows:
+A brief summary of the RAKE algorithm:
 \begin{enumerate}
 \item Split the text into an array of words using the word delimiters.
 \item Split the array into sequences contiguous words using stop words and phrase delimiters.
 \item Candidate keywords are words in a sequence that are assigned the same position in the text. 
-\item Assign scores to each keyword candidate using ration of degree to frequency. 
+\item Assign scores to each keyword candidate using ratio of degree to word-frequency. 
 \item Keywords that contain stop words:
 \begin{enumerate}
-\item A pair of candidate keywords must be adjoind at least twice in the text in the same order.
+\item A pair of candidate keywords must be adjoined at least twice in the text in the same order.
 \item Create a new keyword which contains the pair of keywords with interior stopwords between them.
 \item The new keyword’s score is the sum of the scores of its keywords components.
 \end{enumerate}
 \item The keywords of the text are the top T keywords from the keyword candidates list.
 \end{enumerate}
 
-\citet{1} also develops a method for stoplist generation, where they use document frequency, keyword frequency (how many times the word appears in the keywords set) and adjacency frequency (how many times the word appears adjacent to a keyword). Using only term frequency risks adding content bearing words to the stoplist, so adjacency frequency was used. However, words that appear more often in the keywords list than adjacent to keywords are excluded from the stoplist.   
+\citet{1} also develops methods for stoplist generation. These stoplist generation methods leverage supervised datasets to generate dataset specific (thus domain specific) stoplists. 
 
-In evaluating RAKE, no training sets are used because RAKE is unsupervised learning algorithm. Precision, Recall and F-Measure were used for evaluating the results. The results of RAKE were compared with the results of testing the same set of texts using TextRank and Supervised Learning (Hulth 2003). Perfect precision is not possible with any of the techniques because some of the manually assigned keywords might not appear in the text. The performance of RAKE depends on the stoplist that was used. The best precision, F-measure and a comparable recall can be achieved by using the keyword adjacency stoplist. Using Fox’s stoplist yields high recall and low precision. RAKE outperforms all previously used keyword extraction algorithms in precision, efficiency and simplicity.
+RAKE was compared to TextRank and seminal supervised learning methods (Hulth 2003) over a dataset of human keyword annotated scientific paper abstracts originating from \citet{hulth-2003-improved}. The performance of RAKE depends on the stoplist used. RAKE was found to outperform all previously used keyword extraction algorithms in precision, efficiency and simplicity when using a domain specific stoplist. Using a generic stoplist, RAKE was found to be no worse performing than TextRank.
 
-To go into more detail about TextRank, \citet{4} discusses how TextRank is a graph-based ranking algorithm, where the importance of a vertex is decided by considering global information recursively computed from the entire graph. Implementing this algorithm goes as follows:
+\citet{4} discusses TextRank, a graph-based ranking algorithm for keyword extraction, where the importance of a vertex (phrases) is decided by considering global information value of the phrase recursively computed from the entire graph (text). Implementing this algorithm goes as follows:
 
 \begin{enumerate}
 \item Identify text units and add them as vertices to the graph.
@@ -89,26 +93,31 @@ To go into more detail about TextRank, \citet{4} discusses how TextRank is a gra
 \item Rank vertices based on their final scores (values).
 \end{enumerate}   
 
-Evaluating TextRank, the results were compared with the uncontrolled set of keywords (Freely assigned by the indexers and unrestricted to a given dictionary). Precision, recall and F-measure were used for evaluation. Best performance is achieved with smaller window, a filter that only considers Nouns and Adjectives when pre-processing the text, and when the testing was on undirected graphs (no direction of the relation between the text units). The results obtained by TextRank were higher than all previously proposed systems. However, RAKE algorithm was not used and the results were not compared to RAKE’s results.
+The authors of TextRank evaluate their method to \citet{hulth-2003-improved} using the same dataset in RAKE, again, originating from \citet{hulth-2003-improved}.
 
-We will not be recreating the results of \citet{hulth-2003-improved}, however as we are including their results in our evaluation, we would like to note their method. \citet{1} describe their method where "Hulth (2003) compares the effectiveness of three term selection approaches: noun-phrase (NP) chunks, n-grams, and POS tags, with four discriminative features of these terms as inputs for automatic keyword extraction using a supervised machine-learning algorithm."    
+We will not be recreating the results of \citet{hulth-2003-improved}, however as we are including their results in our evaluation for reference. \citet{1} describe their method where "Hulth (2003) compares the effectiveness of three term selection approaches: noun-phrase (NP) chunks, n-grams, and POS tags, with four discriminative features of these terms as inputs for automatic keyword extraction using a supervised machine-learning algorithm." \citet{1} noted difficulty in finding training materials used by \citet{hulth-2003-improved}.    
 
-\section{Implementation}
+\section{Methodology}
 
-We aim to implement RAKE and Textrank using existing Python modules. We will then create an evaluation framework to reproduce the results from the paper. For example, the first evaluation \citet{1} proposes compares RAKE and TextRank variants on a corpus of scientific abstracts, comparing accuracy as a measure of precision and recall over 500 abstracts. In this case, our implementation would be using the existing Python implementation of the RAKE algorithm, and an aggregation process to feed in and mark individual abstracts and in the end summarize its performance.
+Since our inital proposal, we have found implmentations of RAKE and TextRank in python (\citet{2}, \citet{3}). Since these are already availible to us, we will replicate \citet{1} Rose et all's evaluation of the two using third party libraries. 
 
-\citet{1} reference four datasets which are needed for this evaluation. RAKE requires a stop list of words to function, they evaluate RAKE using two stop lists, Fox and KA. RAKE is compared on two datasets, one about technical abstracts from a referenced study, and the MPQA Corpus. Upon inspection, the two stop lists are readily available (they provide KA, [4]). The MPQA dataset is also available. [5]
-
-\subsection {Pseudo Code}
-This is to do.
+In essence, we will implment an evaluation script that feeds a dataset into these third party libraries to extract then aggregate the resultant metrics. This task will involve data collection, understanding the interface to the RAKE and textrank implementations, preprocessing datasets to be fed into the two methods, and extracting and aggregating the results.
 
 \section{Evaluation}
 
-At a high level, we will be attempting to replicate Table 1.2 from \citeapos{1}'s paper. This means that we will be creating and testing 2 different keyword extracting methods, which are RAKE and TextRank. We will also be comparing the results of these two methods against the results published  results of \citeapos{hulth-2003-improved} published results as done by \citet{1}. 
+As our project is based on replicating the results of an article, we will evaluate the aggregate measures recorded as per the inital study and conduct an error analysis from samples from the replicating evaluation. 
 
-This means that we will be comparing the number of extracted keywords from our implemented RAKE and TextRank methods against the number of correct keywords. For RAKE, this will include testing with a Keyword Adjacency stoplist, and Fox stoplist \citep{fox}. For TextRank, this will mean that we will be testing the co-occurence window of n=2 and 3.
+Again, the measures reported in the original study by method were: number of extracted keywords, correct number of extracted keywords, precision, recall, and f-measure (f-score).  We will compare our recorded measures to that of the original study to what extent are Rose et all's results reproducible. We will consider Rose et all's results reproduceable if the ordinal performance between RAKE and TextRank variants can be verified. 
 
-After obtaining the number of correct keywords to extracted keyword, we will then calculate the precision, recall, and F-measure. We can then determine with these measures if we have replicate the results that RAKE has the highest precision and F-measure, but does not have the highest recall. 
+For this reproduction we require three datasets:
+
+\begin{enumerate}
+\item \citet{hulth-2003-improved}'s dataset of human keyword annotated scientific paper abstracts.
+\item Fox's Stoplist, a generic stopword-list. 
+\item Keyword Adjecency stoplist, a stoplist generated by the authors of RAKE.
+\end{enumerate}   
+
+Thus far, we have found the dataset used by \citet{hulth-2003-improved} and Fox's Stoplist.
 
 \section{Remaining Work}
 
