@@ -34,7 +34,9 @@ class Abstract:
         PUNCUATION_POS_TAGS = [",", ".", ":"]
         REPLACEMENTS  = {
             "-LRB-": " (",
-            "-RRB-": ")"
+            "-RRB-": ")",
+            "-LSB-": " [",
+            "-RSB-": " )",
         }
         PREV_CHAR_TO_NOT_ADD_SPACES_TO = ["("]
 
@@ -101,13 +103,13 @@ def getAbstracts():
 
     return abstracts
 
-if __name__ == "__main__":
-    for a in getAbstracts():
-        print(a.filepath)
-        print(a.num)
-        print(a.abstract)
-        print(a.actual_keywords)
+# if __name__ == "__main__":
+#     for a in getAbstracts():
+#         print(a.filepath)
+#         print(a.num)
+#         print(a.abstract)
+#         print(a.actual_keywords)
         
-        x = input()
-        if x:
-            break
+#         x = input()
+#         if x:
+#             break
