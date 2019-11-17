@@ -1,15 +1,25 @@
 import loadData
 import spacy
 from spacy.matcher import PhraseMatcher
+import time
+
+class StoplistWord:
+    '''Class used to keep track of frequencies of each adjacent word'''
+
+    def __init__(self,word):
+        self.word = word
+        self.termFreq = 0
+        self.docFreq = 0
+        self.adjFreq = 0
+        self.keywordFreq = 0
 
 def genTokenizedText(abstract):
-    """ Helper function, generates the 
+    """ Helper function, generates the tokenized version of the abstract
     """
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(abstract)
 
     return doc
-
 
 def getAdjacencyWords (abstract,tokenizedText):
     """ Helper function, extracts the adjacent words of each keyword in the abstract
@@ -41,7 +51,7 @@ def getAdjacencyWords (abstract,tokenizedText):
 
     return adjacentWords
 
-def getFrequencies (stoplistList,abstractObj,tokenizedText,adjacentWords):
+def getFrequencies (stopwordObjList,abstractObj,tokenizedText,adjacentWords):
     '''See if the adjacent word currently exists in the stoplist list. if it does, update the values for it. if not, create a new StoplistWord object '''
 
     nlp = spacy.load('en_core_web_sm')
@@ -70,7 +80,6 @@ def getFrequencies (stoplistList,abstractObj,tokenizedText,adjacentWords):
             matchInText = doc[start].text.lower()
             if adjacentWord == matchInText:
                 termfreq +=1
-        print(adjacentWord,termfreq)
 
         #get doc freq
         docfreq = 1
@@ -89,8 +98,8 @@ def getFrequencies (stoplistList,abstractObj,tokenizedText,adjacentWords):
                 if adjacentWord == matchInText:
                     keywordfreq +=1
 
-        if len(stoplistList)>0: #handle first iteration of function
-            for stopListObject in stoplistList:
+        if len(stopwordObjList)>0: #handle first iteration of function
+            for stopListObject in stopwordObjList:
                 
                 stopwordExists = False
 
@@ -99,36 +108,21 @@ def getFrequencies (stoplistList,abstractObj,tokenizedText,adjacentWords):
                     stopListObject.docFreq += docfreq
                     stopListObject.adjFreq += adjfreq
                     stopListObject.keywordFreq += keywordfreq
-                    print("this word exists in the list",stopListObject.word)
 
                     stopwordExists = True
                     break
 
             if not stopwordExists:
-                # stoplistword = StoplistWord(adjacentWord)
-                # stoplistword.termFreq = termfreq
-                # stoplistword.docFreq = docfreq
-                # stoplistword.adjFreq = adjfreq
-                # stoplistword.keywordFreq = keywordfreq
-
-                # stoplistList.append(stoplistword)
-
-                createStopWordObject (stoplistList,adjacentWord,termfreq,docfreq,adjfreq,keywordfreq)
+                createStopWordObject (stopwordObjList,adjacentWord,termfreq,docfreq,adjfreq,keywordfreq)
 
         else: #create new stoplist object and add it to the stopwordlist
-            # stoplistword = StoplistWord(adjacentWord)
-            # stoplistword.termFreq = termfreq
-            # stoplistword.docFreq = docfreq
-            # stoplistword.adjFreq = adjfreq
-            # stoplistword.keywordFreq = keywordfreq
-
-            # stoplistList.append(stoplistword)
-
-            createStopWordObject (stoplistList,adjacentWord,termfreq,docfreq,adjfreq,keywordfreq)            
+            createStopWordObject (stopwordObjList,adjacentWord,termfreq,docfreq,adjfreq,keywordfreq)            
        
-    return stoplistList
+    return stopwordObjList
 
-def createStopWordObject (stoplistList,adjacentWord,termfreq,docfreq,adjfreq,keywordfreq):
+def createStopWordObject (stopwordObjList,adjacentWord,termfreq,docfreq,adjfreq,keywordfreq):
+
+    #initialize new stopword object and append it to the stopword object list
 
     stoplistword = StoplistWord(adjacentWord)
     stoplistword.termFreq = termfreq
@@ -136,47 +130,64 @@ def createStopWordObject (stoplistList,adjacentWord,termfreq,docfreq,adjfreq,key
     stoplistword.adjFreq = adjfreq
     stoplistword.keywordFreq = keywordfreq
 
-    stoplistList.append(stoplistword)
+    stopwordObjList.append(stoplistword)
 
-def createStoplist ():
-    pass
+def createStoplist (stopwordObjList):
 
+    stoplistFile = open("keywordAdjacencyStoplist.txt", 'w',encoding="utf-8")
+    excludedFile = open("excludedFromStoplist.txt", 'w',encoding="utf-8")
 
-#initialize frequency dictionary
-stoplistList = []
-
-class StoplistWord:
-    '''Class used to keep track of frequencies of each adjacent word'''
-
-    def __init__(self,word):
-        self.word = word
-        self.termFreq = 0
-        self.docFreq = 0
-        self.adjFreq = 0
-        self.keywordFreq = 0
-
+    stoplistList = []
+    excludedList = []
+    #if the keyword frequency is higher than the adjacency frequency, don't add it to the stoplist
+    for stopWord in stopwordObjList:
+        if stopWord.keywordFreq > stopWord.adjFreq:
+            excludedList.append(stopWord.word)
+            excludedFile.write(stopWord.word + "\n")
+        else:
+            stoplistList.append(stopWord.word)
+            stoplistFile.write(stopWord.word + "\n")
     
+    stoplistFile.close()
+    excludedFile.close()
 
-for a in loadData.getAbstracts():
-    tokenizedText = genTokenizedText(a.abstract)
-    adjacentWords = getAdjacencyWords(a,tokenizedText)
-    # print(a.abstract)
-    # print(a.actual_keywords)
-    # print(adjacentWords)
-    stoplistList = getFrequencies(stoplistList,a,tokenizedText,adjacentWords)
+    return stoplistList,excludedList
+
+   
+if __name__ == "__main__":
+
+    start_time = time.time()
+
+    #initialize frequency dictionary
+    stopwordObjList = []
     
-    print(a.abstract)
+    abstracts = loadData.getAbstracts()
+    print(len(abstracts))
 
-    print(len(stoplistList))
+    for a in abstracts:
 
-    for eachitem in stoplistList:
-        print(eachitem.word)
-        print("adjfreq",eachitem.adjFreq)
-        print("docfreq",eachitem.docFreq)
-        print("keywordfreq",eachitem.keywordFreq)
-        print("termfreq",eachitem.termFreq)
-        print("\n")
+        tokenizedText = genTokenizedText(a.abstract)
+        adjacentWords = getAdjacencyWords(a,tokenizedText)
+        stopwordObjList = getFrequencies(stopwordObjList,a,tokenizedText,adjacentWords)
+        
+        # print(a.abstract)
 
-    x = input()
-    if x:
-        break
+        # print(len(stopwordObjList))
+
+        # for eachitem in stopwordObjList:
+        #     print(eachitem.word)
+        #     print("adjfreq",eachitem.adjFreq)
+        #     print("docfreq",eachitem.docFreq)
+        #     print("keywordfreq",eachitem.keywordFreq)
+        #     print("termfreq",eachitem.termFreq)
+        #     print("\n")
+
+        # x = input()
+        # if x:
+        #     break
+
+    stoplistList,excludedList = createStoplist(stopwordObjList)
+    print(stoplistList)
+    print(excludedList)
+
+    print("--- %s minutes ---" % ((time.time() - start_time)/60))
