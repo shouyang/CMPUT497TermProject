@@ -2,6 +2,8 @@ import loadData
 import spacy
 from spacy.matcher import PhraseMatcher
 import time
+from prettytable import PrettyTable
+
 
 class StoplistWord:
     '''Class used to keep track of frequencies of each adjacent word'''
@@ -136,9 +138,15 @@ def createStoplist (stopwordObjList):
 
     stoplistFile = open("keywordAdjacencyStoplist.txt", 'w',encoding="utf-8")
     excludedFile = open("excludedFromStoplist.txt", 'w',encoding="utf-8")
+    table1_3 = open("table1_3.txt", 'w',encoding="utf-8")
 
     stoplistList = []
     excludedList = []
+
+    #table1_3.write("Word" + "\t"+"\t" + "Document Freq" + "\t"+"\t" + "Adjacency Freq" + "\t"+"\t" + "Keyword Freq" + "\n")
+
+    table1_3table = PrettyTable(["Word", "Term Freq", "Document Freq","Adjacency Freq","Keyword Freq"])
+
     #if the keyword frequency is higher than the adjacency frequency, don't add it to the stoplist
     for stopWord in stopwordObjList:
         if stopWord.keywordFreq > stopWord.adjFreq:
@@ -147,9 +155,17 @@ def createStoplist (stopwordObjList):
         else:
             stoplistList.append(stopWord.word)
             stoplistFile.write(stopWord.word + "\n")
+
+        table1_3table.add_row([stopWord.word, str(stopWord.termFreq), str(stopWord.docFreq),str(stopWord.adjFreq),str(stopWord.keywordFreq)])
+
+        #table1_3.write(stopWord.word + "\t"+"\t" + str(stopWord.docFreq) + "\t"+"\t" + str(stopWord.adjFreq) + "\t"+"\t" + str(stopWord.keywordFreq) + "\n")
+    
+    table1_3.write(table1_3table.get_string())
+
     
     stoplistFile.close()
     excludedFile.close()
+    table1_3.close()
 
     return stoplistList,excludedList
 
