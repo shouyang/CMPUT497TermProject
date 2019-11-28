@@ -104,11 +104,11 @@ for sample in abstracts:
     tabluate("TEXT-3", textrank3_estimate_keywords, actual_keywords, counts)
 
     # Generate Output
-    print("Abstract:", sample.abstract)
-    print("RAKE:", rake_estimate_keywords)
-    print("TextRank WINDOW = 2: ", textrank2_estimate_keywords)
-    print("TextRank WINDOW = 3: ", textrank3_estimate_keywords)
-    print("Actual Keywords: ", actual_keywords)
+    # print("Abstract:", sample.abstract)
+    # print("RAKE:", rake_estimate_keywords)
+    # print("TextRank WINDOW = 2: ", textrank2_estimate_keywords)
+    # print("TextRank WINDOW = 3: ", textrank3_estimate_keywords)
+    # print("Actual Keywords: ", actual_keywords)
     
     # x = input()
     # if x:

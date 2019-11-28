@@ -57,11 +57,11 @@ class Abstract:
                 else:
                     if sentence:
                         if sentence[-1] in PREV_CHAR_TO_NOT_ADD_SPACES_TO:
-                            sentence += word
+                            sentence += word.replace("-","")
                         else:
-                            sentence += " " + word
+                            sentence += " " + word.replace("-","")
                     else:
-                        sentence += word
+                        sentence += word.replace("-","")
 
             # Some sentences do not actually end on a period. Add if necessary.
             if sentence[-1] != ".":
@@ -80,6 +80,7 @@ class Abstract:
         output = []
         for nested_list in keyword_reference[self.num]:
             assert(len(nested_list) == 1)
+            nested_list[0] = nested_list[0].replace("-","")
             output.append(nested_list[0])
 
         return output
@@ -89,8 +90,8 @@ class Abstract:
 def getAbstracts():
     """ Loader function, used to get object representations of all of the test data-folder abstracts.
     """
-    JSON_FILE_PATH = r".\data\references\test.uncontr.json"  
-    XML_FILE_PATH  = r".\data\test"
+    JSON_FILE_PATH = r".\data\references\train.uncontr.json"  
+    XML_FILE_PATH  = r".\data\train"
 
     keyword_reference = json.load(open(JSON_FILE_PATH, "r", encoding="utf-8"))
 
