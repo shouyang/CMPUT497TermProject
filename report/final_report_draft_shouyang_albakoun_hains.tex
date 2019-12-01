@@ -61,9 +61,7 @@ We will be using the dataset used in RAKE as our input, which is a set of abstra
 
 For the stoplist generation, our input will be the keywords from \citep{hulth-2003-improved} and the abstracts associated with each set of keywords. Our output will be a list of words generated to use as the stoplist. This list will be used for our RAKE testing. 
 
-The overarching output will be a table in the form of Table 1.2 in \citet{1}, please see the appendix for details. This will be a table comparing the performance of RAKE and TextRank variants (parameters) listing the metrics: extracted keywords (total, mean), correct keywords (total, mean), precision, recall, f-measure summarizing the replication-evaluation.
-
-The unit output per trial will be a simple experiment comparing the keywords extracted by RAKE and TextRank variants by correctly extracted keywords, correct keywords, precision, recall, and f-measure over an input text and input sequence of "truth/reference" keywords. 
+We will then be analyzing our output to create a table in the form of Table 1.2 in \citet{1}, please see the appendix for details. This will be a table comparing the performance of RAKE and TextRank variants (parameters) listing the metrics: extracted keywords (total, mean), correct keywords (total, mean), precision, recall, f-measure summarizing the replication-evaluation. 
 
 \section{Related Work}
 
@@ -113,6 +111,8 @@ A brief summary of the stoplist generation algorithm:
 	\item All items remaining in the list is our stoplist. 
 \end{enumerate}
 
+Once we have generated the keyword adjacency stoplist, we will test it with our implention of RAKE.
+
 RAKE was compared to TextRank and seminal supervised learning methods \citep{hulth-2003-improved} over a dataset of human keyword annotated scientific paper abstracts originating from \citet{hulth-2003-improved}. The performance of RAKE depends on the stoplist used. RAKE was found to outperform all previously used keyword extraction algorithms in precision, efficiency and simplicity when using a domain specific stoplist. Using a generic stoplist, RAKE was found to be no worse performing than TextRank.
 
 Since our initial proposal, we have found implementations of RAKE and TextRank in python (\citet{2}, \citet{3}). Since these are already available to us, we will replicate \citeapos{1} evaluation of the two using third party libraries. 
@@ -123,25 +123,38 @@ In essence, we will implement an evaluation script that feeds a dataset into the
 
 As our project is based on replicating the results of an article, we will evaluate the aggregate measures recorded as per the initial study and conduct an error analysis from samples from the replicating evaluation. 
 
-Again, the measures reported in the original study by method were: number of extracted keywords, correct number of extracted keywords, precision, recall, and f-measure (f-score).  We will compare our recorded measures to that of the original study to what extent are \citeapos{1} results reproducible. We will consider \citeapos{1} results reproduceable if the ordinal performance between RAKE and TextRank variants can be verified. 
 
+
+\subsection{Data Sets \& Code Used}
 For this reproduction we require three datasets:
 
 \begin{enumerate}
 \item \citet{hulth-2003-improved}'s dataset of human keyword annotated scientific paper abstracts.
-\item Fox's Stoplist, a generic stopword-list. 
-\item Keyword Adjecency stoplist, which will be reproduced using the algorithm described in \citet{hulth-2003-improved}. 
-\end{enumerate}   
+\item Fox's Stoplist, a generic stopword-list.
+\item The top 100 keywords generated provided from \citeapos{1}. The full list of words used in \citeapos{1}'s keyword adjacency stoplist was not available, so we are using what was provided in the paper to compare against our generated stoplist. 
+\end{enumerate}  
 
-Thus far, we have found the dataset used by \citet{hulth-2003-improved} and Fox's Stoplist.
+As described in the methodology section, we also used Python implementations of RAKE and TextRank. 
+
+We will be generating the Keyword Adjacency stoplist, which will be reproduced using the algorithm described in \citet{hulth-2003-improved}. To complete this, we will be tokenizing both each abstract and its keywords with spaCy's PhraseMatcher, and then completing the stoplist generation algorithm with this tokenized text. We will then test RAKE with our generated stoplist.
+
+\subsection{Evaluation Metrics}
+
+The measures reported in the original study by method were: number of extracted keywords, correct number of extracted keywords, precision, recall, and f-measure (f-score).  We will compare our recorded measures to that of the original study to what extent are \citeapos{1} results reproducible. We will consider \citeapos{1} results reproducible if the ordinal performance between RAKE and TextRank variants can be verified. 
+
+\subsection{Results}
+to do
+
+\subsection{Error Analysis}
+to do
 
 \section{Conclusion}
 
-to do
+to do 
 
 \section{Acknowledgments}
 
-to do 
+Teamwork Breakdown: Daniel wrote the code for re-creating the abstracts and the measures for tesing the output for TextRank and RAKE. Sharon wrote the code for generation the stoplist and found the datasets used from \citet{hulth-2003-improved}.
  
 
 % include your own bib file like this:
