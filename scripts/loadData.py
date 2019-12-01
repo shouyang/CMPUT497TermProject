@@ -87,11 +87,15 @@ class Abstract:
 
 
 
-def getAbstracts():
+def getAbstracts(stoplistGeneration = False):
     """ Loader function, used to get object representations of all of the test data-folder abstracts.
     """
-    JSON_FILE_PATH = r".\data\references\train.uncontr.json"  
-    XML_FILE_PATH  = r".\data\train"
+    if stoplistGeneration:    #use the training files if using for stoplist generation
+        JSON_FILE_PATH = r".\data\references\train.uncontr.json"  
+        XML_FILE_PATH  = r".\data\train"
+    else:                     #use the testing files as default
+        JSON_FILE_PATH = r".\data\references\test.uncontr.json"  
+        XML_FILE_PATH  = r".\data\test"
 
     keyword_reference = json.load(open(JSON_FILE_PATH, "r", encoding="utf-8"))
 
