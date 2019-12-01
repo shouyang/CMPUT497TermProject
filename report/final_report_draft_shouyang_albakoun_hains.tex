@@ -15,7 +15,8 @@
 \usepackage{times}
 \usepackage{latexsym}
 \usepackage{graphicx}
-
+\usepackage{array}
+\usepackage{makecell}
 \usepackage{url}
 
 %\aclfinalcopy % Uncomment this line for the final submission
@@ -143,7 +144,22 @@ We will be generating the Keyword Adjacency stoplist, which will be reproduced u
 The measures reported in the original study by method were: number of extracted keywords, correct number of extracted keywords, precision, recall, and f-measure (f-score).  We will compare our recorded measures to that of the original study to what extent are \citeapos{1} results reproducible. We will consider \citeapos{1} results reproducible if the ordinal performance between RAKE and TextRank variants can be verified. 
 
 \subsection{Results}
-to do
+to do 
+
+\scalebox{0.9}{
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.9cm}c c c c c c c }
+	\hline
+	                                         & \multicolumn{2}{c}{\makecell{Extracted \\ Keywords}} & \multicolumn{2}{c}{\makecell{Correct \\ Keywords}}       \\ \hline
+	Method                                   &       Total        & Mean & Total            & Mean & Precision & Recall & F-Measure \\ \hline
+	RAKE                                     &  \\
+	\makecell{KA stoplist \\(top 100 words)}    &                    &      &                  &      &           &        &           \\
+	\makecell{KA stoplist \\(generated)}        &                    &      &                  &      &           &        &           \\
+	Fox stoplist                             &                    &      &                  &      &           &        &           \\ \hline
+	TextRank                                 &  \\
+	\makecell{Undirected, co-occ. \\window = 2} &                    &      &                  &      &           &        &           \\
+	\makecell{Undirected, co-occ. \\window = 3} &                    &      &                  &      &           &        &           \\ \hline
+\end{tabular}
+} 
 
 \subsection{Error Analysis}
 to do
@@ -163,14 +179,14 @@ Teamwork Breakdown: Daniel wrote the code for re-creating the abstracts and the 
 \bibliography{report}
 \bibliographystyle{acl_natbib}
 
-\appendix
+%\appendix
 
-\section{Table 1.2 from \citet{1}}
-\begin{figure}[b!]
-  \centering
-  \includegraphics[width=\linewidth]{table1-2.jpg}
-  \caption{Table 1.2 from \citet{1}}
-\end{figure}
+%\section{Table 1.2 from \citet{1}}
+%\begin{figure}[b!]
+%  \centering
+%  \includegraphics[width=\linewidth]{table1-2.jpg}
+%  \caption{Table 1.2 from \citet{1}}
+%\end{figure}
 
 
 \end{document}
