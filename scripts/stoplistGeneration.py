@@ -19,7 +19,7 @@ def genTokenizedText(abstract):
     """ Helper function, generates the tokenized version of the abstract
     """
     nlp = spacy.load('en_core_web_sm')
-    doc = nlp(abstract)
+    doc = nlp(abstract.lower())
 
     return doc
 
@@ -39,17 +39,39 @@ def getAdjacencyWords (abstract,tokenizedText):
 
     doc = tokenizedText
     matches = matcher(doc)
+    # print(abstract.abstract)
+    # print("\n")
+    # print(terms)
+
     for match_id, start, end in matches:
         span = doc[start:end]
-        leftword = doc[start-1]
-        rightword = doc[end]
+        # leftword = doc[start-1]
+        # rightword = doc[end]
 
-        for word in [leftword,rightword]:
-            if word.is_alpha:
-                if word not in adjacentWords:
-                    adjacentWords[word.text.lower()] = 1
+    #    print(span)
+
+        left_i = start - 1
+        right_i = end
+
+        while left_i >= 0:
+            if doc[left_i].is_alpha or doc[left_i].is_digit:
+                if doc[left_i] not in adjacentWords:
+                    adjacentWords[doc[left_i].text.lower()] = 1
                 else:
-                    adjacentWords[word.text.lower()] += 1 
+                    adjacentWords[doc[left_i].text.lower()] += 1
+                break
+            else:
+                left_i -= 1    
+
+        while right_i < len(doc):
+            if doc[right_i].is_alpha or doc[right_i].is_digit:
+                if doc[right_i] not in adjacentWords:
+                    adjacentWords[doc[right_i].text.lower()] = 1
+                else:
+                    adjacentWords[doc[right_i].text.lower()] += 1
+                break
+            else:
+                right_i += 1                         
 
     return adjacentWords
 
@@ -152,16 +174,14 @@ def createStoplist (stopwordObjList):
         if stopWord.keywordFreq > stopWord.adjFreq:
             excludedList.append(stopWord.word)
             excludedFile.write(stopWord.word + "\n")
-        else:
+            table1_3table.add_row([stopWord.word, str(stopWord.termFreq), str(stopWord.docFreq),str(stopWord.adjFreq),str(stopWord.keywordFreq)])
+        elif stopWord.termFreq >= 10:
+#        else:
             stoplistList.append(stopWord.word)
             stoplistFile.write(stopWord.word + "\n")
-
-        table1_3table.add_row([stopWord.word, str(stopWord.termFreq), str(stopWord.docFreq),str(stopWord.adjFreq),str(stopWord.keywordFreq)])
-
-        #table1_3.write(stopWord.word + "\t"+"\t" + str(stopWord.docFreq) + "\t"+"\t" + str(stopWord.adjFreq) + "\t"+"\t" + str(stopWord.keywordFreq) + "\n")
-    
+            table1_3table.add_row([stopWord.word, str(stopWord.termFreq), str(stopWord.docFreq),str(stopWord.adjFreq),str(stopWord.keywordFreq)])
+   
     table1_3.write(table1_3table.get_string())
-
     
     stoplistFile.close()
     excludedFile.close()
@@ -177,7 +197,7 @@ if __name__ == "__main__":
     #initialize frequency dictionary
     stopwordObjList = []
     
-    abstracts = loadData.getAbstracts()
+    abstracts = loadData.getAbstracts(True)
     print(len(abstracts))
 
     for a in abstracts:
@@ -198,9 +218,9 @@ if __name__ == "__main__":
         #     print("termfreq",eachitem.termFreq)
         #     print("\n")
 
-        # x = input()
-        # if x:
-        #     break
+#        x = input()
+#        if x:
+#            break
 
     stoplistList,excludedList = createStoplist(stopwordObjList)
     print(stoplistList)
