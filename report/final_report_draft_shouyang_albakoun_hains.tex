@@ -18,6 +18,7 @@
 \usepackage{array}
 \usepackage{makecell}
 \usepackage{url}
+\usepackage{lipsum}
 
 %\aclfinalcopy % Uncomment this line for the final submission
 %\def\aclpaperid{***} %  Enter the acl Paper ID here
@@ -132,7 +133,7 @@ For this reproduction we require three datasets:
 \begin{enumerate}
 \item \citet{hulth-2003-improved}'s dataset of human keyword annotated scientific paper abstracts.
 \item Fox's Stoplist, a generic stopword-list.
-\item The top 100 keywords generated provided from \citeapos{1}. The full list of words used in \citeapos{1}'s keyword adjacency stoplist was not available, so we are using what was provided in the paper to compare against our generated stoplist. 
+\item The top 100 keywords generated provided from \citeapos{1}. The full list of words used in \citeapos{1} keyword adjacency stoplist was not available, so we are using what was provided in the paper to compare against our generated stoplist. 
 \end{enumerate}  
 
 As described in the methodology section, we also used Python implementations of RAKE and TextRank. 
@@ -146,23 +147,29 @@ The measures reported in the original study by method were: number of extracted 
 \subsection{Results}
 to do 
 
+\lipsum[3]
+\begin{table*}[t]
 \scalebox{0.9}{
+\centering
 \begin{tabular}{>{\raggedright\arraybackslash}p{2.9cm}c c c c c c c }
 	\hline
 	                                         & \multicolumn{2}{c}{\makecell{Extracted \\ Keywords}} & \multicolumn{2}{c}{\makecell{Correct \\ Keywords}}       \\ \hline
 	Method                                   &       Total        & Mean & Total            & Mean & Precision & Recall & F-Measure \\ \hline
 	RAKE                                     &  \\
-	\makecell{KA stoplist \\(top 100 words)}    &                    &      &                  &      &           &        &           \\
-	\makecell{KA stoplist \\(generated)}        &                    &      &                  &      &           &        &           \\
-	Fox stoplist                             &                    &      &                  &      &           &        &           \\ \hline
+	\makecell[l]{KA stoplist \\(generated)}  & 8891               & 17.8 & 1962             & 3.9  & 23.8       & 40.7    & 28.7          \\
+	Fox stoplist                             & 8152               & 16.3 & 2125             & 4.3  & 27.2       & 44.3    & 32.4          \\ \hline
+	\makecell[l]{\citep{1} \\ RAKE}			 &  \\ 
+	\makecell[l]{KA stoplist \\(\textit{df} $>$ 10)}     		  & 6052 & 12.1 			& 2037 & 4.1  		& 33.7    & 41.5    & 37.2       \\
+	Fox stoplist     		 				 & 7893               & 15.8 & 2054             & 4.2  & 26         & 42.2    & 32.1      \\ \hline
 	TextRank                                 &  \\
-	\makecell{Undirected, co-occ. \\window = 2} &                    &      &                  &      &           &        &           \\
-	\makecell{Undirected, co-occ. \\window = 3} &                    &      &                  &      &           &        &           \\ \hline
+	\makecell[l]{Undirected, co-occ. \\window = 2} &                    &      &                  &      &           &        &           \\
+	\makecell[l]{Undirected, co-occ. \\window = 3} &                    &      &                  &      &           &        &           \\ \hline
 \end{tabular}
-} 
+}
+\end{table*} 
 
 \subsection{Error Analysis}
-to do
+Fusce maximus quam nec odio ullamcorper, consectetur aliquam mauris malesuada. Sed lacinia elit lectus, sed rutrum augue dictum non. Pellentesque tempor felis non mi hendrerit, vel sagittis nibh ultrices. Proin ullamcorper lorem in orci sollicitudin imperdiet. Maecenas iaculis convallis facilisis. Nunc lobortis eleifend lectus non aliquet. Sed sagittis, mauris cursus imperdiet venenatis, mi purus tincidunt massa, vel gravida enim tellus id dui. Sed lobortis tincidunt turpis. Aenean rhoncus sapien ex. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus a rhoncus augue, quis sagittis nisi. Donec vulputate orci ut ultricies ornare. Vestibulum purus metus, aliquet in scelerisque vel, volutpat non sem. Donec hendrerit urna ante, non rutrum risus efficitur eget. Curabitur ligula felis, consectetur vitae ultricies id, condimentum et lectus. Morbi bibendum velit eget scelerisque dictum.
 
 \section{Conclusion}
 

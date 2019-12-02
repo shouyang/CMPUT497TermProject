@@ -10,9 +10,7 @@ FOX_SL= ['a', 'about', 'above', 'across', 'after', 'again', 'against', 'all', 'a
 
 KA_new_stoplist = ['new', 'the', 'by', 'that', 'one', 'of', 'is', 'called', 'instead', 'with', 'for', 'in', 'provide', 'are', 'such', 'as', 'and', 'it', 'on', 'we', 'a', 'provides', 'an', 'this', 'or', 'however', 'where', 'these', 'have', 'because', 'which', 'to', 'along', 'using', 'both', 'scheme', 'multiple', 'its', 'has', 'method', 'more', 'many', 'based', 'effective', 'thus', 'from', 'about', 'during', 'our', 'process', 'also', 'without', 'techniques', 'associated', 'three', 'simple', 'technique', 'over', 'through', 'after', 'any', 'among', 'existing', 'digital', 'application', 'like', 'derived', 'may', 'were', 'was', 'than', 'under', 'results', 'between', 'while', 'but', 'uses', 'used', 'into', 'can', 'resulting', 'accurate', 'simulation', 'different', 'approach', 'design', 'applied', 'at', 'including', 'performance', 'proposed', 'must', 'system', 'model', 'systems', 'conventional', 'then', 'response', 'methods', 'each', 'standard', 'language', 'improved', 'when', 'other', 'their', 'make', 'if', 'two', 'how', 'study', 'several', 'only', 'various', 'given', 'via', 'general', 'use', 'c', 'consists', 'applications', 'some', 'include', 'most', 'all', 'business', 'research', 'participation', 'computer', 'code', 'architecture', 'services', 'first', 'problems', 'p', 'cbr', 'case', 'sub', 'respectively', 'imrt', 'algorithm', 'sup', 'there', 'developed', 'large', 'will', 'efficient', 'current', 'hpf', 'data', 'programs', 'models', 'what', 'access', 'mobile', 'problem', 'judgment', 'building', 'manufacturing', 'n', 'hybrid', 'technology', 'content', 'ga', 'trained']
 
-KA_stoplist=['new', 'the', 'by', 'that', 'one', 'of', 'is', 'called', 'instead', 'with', 'for', 'in', 'provide', 'are', 'such', 'as', 'and', 'it', 'on', 'we', 'a', 'provides', 'an', 'this', 'or', 'however', 'where', 'these', 'have', 'because', 'which', 'to', 'along', 'using', 'both', 'scheme', 'multiple', 'its', 'has', 'method', 'more', 
-'many', 'based', 'like', 'effective', 'thus', 'from', 'about', 'during', 'our', 'process', 'also', 'without', 'techniques', 'associated', 'three', 'simple', 'technique', 'over', 'through', 'after', 'any', 'among', 'existing', 'application', 'derived', 'may', 'were', 'was', 'than', 'under', 'results', 'between', 'while', 'but', 'uses', 'used', 'into', 'can', 'resulting', 'accurate', 'simulation', 'different', 'approach', 'design', 'applied', 'at', 'including', 'performance', 'proposed', 'must', 'system', 'model', 'systems', 'conventional', 
-'then', 'order', 'methods', 'each', 'standard', 'language', 'high', 'improved', 'when', 'other', 'their', 'ii', 'make', 'if', 'two', 'how', 'study', 'single', 'several', 'only', 'various', 'given', 'via', 'general', 'use', 'c', 'consists', 'applications', 'known', 'some', 'include', 'most', 'all', 'research', 'participation', 'computer', 'code', 'architecture', 'services', 'first', 'x', 'problems', 'p', 'cbr', 'case', 'sub', 'respectively', 'cm', 'imrt', 'dimensional', 'sup', 'algorithm', 'there', 'developed', 'large', 'will', 'traditional', 'efficient', 'current', 'time', 'hpf', 'data', 'programs', 'models', 'what', 'access', 'problem', 'judgment', 'building', 'manufacturing', 'n', 'hybrid', 'technology', 'content', 'ga', 'trained', 'mlp']
+KA_doc_freq_stoplist = ['new', 'the', 'by', 'that', 'one', 'of', 'is', 'called', 'with', 'for', 'in', 'are', 'such', 'as', 'and', 'it', 'on', 'we', 'a', 'provides', 'an', 'this', 'or', 'however', 'where', 'these', 'have', 'because', 'which', 'to', 'along', 'using', 'both', 'its', 'has', 'method', 'more', 'many', 'based', 'thus', 'from', 'during', 'our', 'process', 'also', 'without', 'techniques', 'associated', 'three', 'simple', 'technique', 'over', 'through', 'after', 'any', 'among', 'may', 'were', 'was', 'than', 'under', 'between', 'while', 'but', 'uses', 'used', 'into', 'can', 'different', 'approach', 'at', 'including', 'proposed', 'must', 'system', 'model', 'systems', 'conventional', 'methods', 'each', 'standard', 'when', 'other', 'their', 'if', 'two', 'how', 'study', 'several', 'various', 'given', 'via', 'use', 'some', 'all', 'first', 'will', 'efficient', 'data']
 
 top_100_words_stoplist = ["the", "and", "of", "a", "in", "is", "for", "to", "we", "this", "are", "with", "as", "on", "it", "an", "that", "which", "by", "using", "can", "paper", "from", "be", "based", "has", "was", "have", "or", "at", "such", "also", "but", "results", "proposed", "show", "new", "these", "used", "however", "our", "were", "when", "one", "not", "two", "study", "present", "its", "sub", "both", "then", "been", "they", "all", "presented", "if", "each", "approach", "where", "may", "some", "more", "use", "between", "into", "1", "under", "while", "over", "many", "through", "addition", "well", "first", "will", "there", "propose", "than", "their", "2", "most", "sup", "developed", "particular", "provides", "including", "other", "how",
 "without", "during", "article", "application", "only", "called", "what", "since", "order", "experimental", "any"]
@@ -41,7 +39,10 @@ def get_F_score(estimate, actual, alpha = 0.5):
     precision = get_precision(estimate, actual)
     recall    = get_recall(estimate, actual)
 
-    return 1.0 / (alpha / precision + (1 - alpha) / recall)
+    if precision == 0 or recall == 0:
+        return 0
+    else:
+        return 1.0 / (alpha / precision + (1 - alpha) / recall)
 
 
 def get_RAKE_keywords(sample, stoplist, T_DENOM = 3):
@@ -87,6 +88,15 @@ def tabluate(method_name, estimate_keywords, actual_keywords, output):
 
     output[key] = temp
 
+    # Update F-Score
+    key = (method_name, "F-Score")
+
+    temp = output.get(key, [])
+    temp.append(get_F_score(estimate_keywords, actual_keywords))
+
+    output[key] = temp
+
+
     
 abstracts = getAbstracts()
 counts = {}
@@ -97,14 +107,14 @@ for sample in abstracts:
     
     newlist = KA_new_stoplist + top_100_words_stoplist
     # Get Estimates
-    rake_estimate_keywords      = get_RAKE_keywords(sample, top_100_words_stoplist)
-    #textrank2_estimate_keywords = get_TextRank_keywords(sample, window = 2)
-    #textrank3_estimate_keywords = get_TextRank_keywords(sample, window = 3)
+    #rake_estimate_keywords      = get_RAKE_keywords(sample, FOX_SL)
+    textrank2_estimate_keywords = get_TextRank_keywords(sample, window = 2)
+    textrank3_estimate_keywords = get_TextRank_keywords(sample, window = 3)
     
     # Tabluate Estimates
-    tabluate("RAKE-FOX", rake_estimate_keywords, actual_keywords, counts)
-    #tabluate("TEXT-2", textrank2_estimate_keywords, actual_keywords, counts)
-    #tabluate("TEXT-3", textrank3_estimate_keywords, actual_keywords, counts)
+    #tabluate("RAKE-FOX", rake_estimate_keywords, actual_keywords, counts)
+    tabluate("TEXT-2", textrank2_estimate_keywords, actual_keywords, counts)
+    tabluate("TEXT-3", textrank3_estimate_keywords, actual_keywords, counts)
 
     # Generate Output
     # print("Abstract:", sample.abstract)
@@ -117,17 +127,27 @@ for sample in abstracts:
     # if x:
         # break
 
-print(counts[("RAKE-FOX", "Assigned")])
-print(counts[("RAKE-FOX", "Correct")])
-print(statistics.mean(counts[("RAKE-FOX","Precision")]))
-print(statistics.mean(counts[("RAKE-FOX","Recall")]))
-# print("--")
-# print(counts[("TEXT-2", "Assigned")])
-# print(counts[("TEXT-2", "Correct")])
-# print(statistics.mean(counts[("TEXT-2","Precision")]))
-# print(statistics.mean(counts[("TEXT-2","Recall")]))
-# print("--")
-# print(counts[("TEXT-3", "Assigned")])
-# print(counts[("TEXT-3", "Correct")])
-# print(statistics.mean(counts[("TEXT-3","Precision")]))
-# print(statistics.mean(counts[("TEXT-3","Recall")]))
+# print(counts[("RAKE-FOX", "Assigned")])
+# print(counts[("RAKE-FOX", "Correct")])
+# print("Precision: ",statistics.mean(counts[("RAKE-FOX","Precision")]))
+# print("Recall: ",statistics.mean(counts[("RAKE-FOX","Recall")]))
+# print("F-Score: ",statistics.mean(counts[("RAKE-FOX","F-Score")]))
+# print("Mean assigned: ",counts[("RAKE-FOX", "Assigned")]/len(abstracts))
+# print("Mean correct: ",counts[("RAKE-FOX", "Correct")]/len(abstracts))
+#print("--")
+print(counts[("TEXT-2", "Assigned")])
+print(counts[("TEXT-2", "Correct")])
+print(statistics.mean(counts[("TEXT-2","Precision")]))
+print(statistics.mean(counts[("TEXT-2","Recall")]))
+print("F-Score: ",statistics.mean(counts[("TEXT-2","F-Score")]))
+print("Mean assigned: ",counts[("TEXT-2", "Assigned")]/len(abstracts))
+print("Mean correct: ",counts[("TEXT-2", "Correct")]/len(abstracts))
+
+print("--")
+print(counts[("TEXT-3", "Assigned")])
+print(counts[("TEXT-3", "Correct")])
+print("Precision: ",statistics.mean(counts[("TEXT-3","Precision")]))
+print("Recall: ",statistics.mean(counts[("TEXT-3","Recall")]))
+print("F-Score: ",statistics.mean(counts[("TEXT-3","F-Score")]))
+print("Mean assigned: ",counts[("TEXT-3", "Assigned")]/len(abstracts))
+print("Mean correct: ",counts[("TEXT-3", "Correct")]/len(abstracts))

@@ -175,7 +175,7 @@ def createStoplist (stopwordObjList):
             excludedList.append(stopWord.word)
             excludedFile.write(stopWord.word + "\n")
             table1_3table.add_row([stopWord.word, str(stopWord.termFreq), str(stopWord.docFreq),str(stopWord.adjFreq),str(stopWord.keywordFreq)])
-        elif stopWord.termFreq >= 10:
+        elif stopWord.docFreq > 10:
 #        else:
             stoplistList.append(stopWord.word)
             stoplistFile.write(stopWord.word + "\n")
