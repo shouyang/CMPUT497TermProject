@@ -55,31 +55,36 @@
 
 \section{Introduction}
 
-We aim to replicate the main evaluation from the article "Automatic Keyword Extraction from Individual Documents" by \citet{1}. This paper devises an unsupervised method for keyword extraction titled "RAKE" and compares it to a previous well performing unsupervised method called "TextRank". Details to follow in the evaluation section.
+We aim to replicate the main evaluation from the article "Automatic Keyword Extraction from Individual Documents" by \citet{1}. This paper devises an unsupervised method for keyword extraction titled "RAKE" and compares it to a previous well performing unsupervised method called "TextRank". Details to follow in the evaluation section. These two papers explore two unsupervised methods, RAKE based on word adjacency and TextRank based on generating an importance weighted word graph.
 
 Keyword extraction is the automated process of extracting important words and phrases from a document. The importance of keyword extraction is in application, in information retrieval, feature engineering, and augmenting human classification tasks. At its most basic level, it helps humans process unstructured data in a more efficient and digestible manner. The importance of this replication study is to verify the results of \citet{1}, so we can be more confident in using RAKE as keyword extraction method. Confirming the results of RAKE testing is relevant as keyword extraction is a widely used application as discussed above. 
 
-\subsection{Input-Output}
-We will be using the dataset used in RAKE as our input, which is a set of abstracts, and processing the data. Our output will be a generation of keywords extracted from this set of abstracts. We will be comparing the number of correct keywords to extracted keywords, to determine how accurate our replication is to the original paper.
+At its core, keyword/keyphrase extraction is generating a set of terms from a given section of natural unprocessed text. For our project, the input is the text and the output is the a series of generated keywords/keyphrases via "RAKE" and "TextRank". For each input text, keywords/keyphrases sets are generated via different "RAKE" and "TextRank" variants.    
 
-For the stoplist generation, our input will be the keywords from \citep{hulth-2003-improved} and the abstracts associated with each set of keywords. Our output will be a list of words generated to use as the stoplist. This list will be used for our RAKE testing. 
+We will be using the dataset used in RAKE as our input for evaluation, which is a set of abstracts, and processing the data. Our output will be a generation of keywords extracted from this set of abstracts. We will be comparing the number of correct keywords to extracted keywords, to determine how accurate our replication is to the original paper.
+
+Additionally we try to replicate a stoplist generation method the authors suggest that complements RAKE. The input is abstract and human annotated keywords from \citep{hulth-2003-improved}. The output is a list of stopwords. This list will be used for our RAKE testing. In essence, the authors have suggested a supervised complementary stoplist generation scheme to RAKE. 
 
 We will then be analyzing our output to create a table in the form of Table 1.2 in \citet{1}, please see the appendix for details. This will be a table comparing the performance of RAKE and TextRank variants (parameters) listing the metrics: extracted keywords (total, mean), correct keywords (total, mean), precision, recall, f-measure summarizing the replication-evaluation. 
 
 \section{Related Work}
 
-\citet{4} discusses TextRank, a graph-based ranking algorithm for keyword extraction, where the importance of a vertex (phrases) is decided by considering global information value of the phrase recursively computed from the entire graph (text). Implementing this algorithm goes as follows:
+\citet{4} proposes TextRank, a graph-based ranking algorithm for keyword extraction, where the importance of a vertex (phrases) is decided by considering global information value of the phrase recursively computed from the entire graph (text). The authors of RAKE cite TextRank as the recent seminal work in unsupervised keyword/keyphrase generation. 
+
+Implementing this algorithm goes as follows:
 
 \begin{enumerate}
-\item Identify text units and add them as vertices to the graph.
-\item Edges of the graph are relations between text units.
-\item Iterate the algorithm until convergence below a given threshold. 
-\item Rank vertices based on their final scores (values).
+\item Select candidate text units and add them as vertices to a graph.
+\item Generate edges of the graph via some relation between text units. (Authors suggest co-occurance)
+\item Compute a recursive importance score of a vertex as some innate value plus the sum of its descendants scores.    
+\item Iterate scoring until convergence via a damping factor. 
+\item Rank vertices based on their final scores (values) and select top n vertices.
+\item Reduce keywords into keyphrases by their co-occurance in the text.
 \end{enumerate}   
 
-The authors of TextRank evaluate their method to \citet{hulth-2003-improved} using the same dataset in RAKE, again, originating from \citet{hulth-2003-improved}.
+RAKE and TextRank evaluate their method using the same methods and dataset from \citet{hulth-2003-improved}, an older seminal work in keyword/keyphrase extraction.
 
-We will not be recreating the results of \citet{hulth-2003-improved}, however as we are including their results in our evaluation for reference. \citet{1} describe their method where "Hulth (2003) compares the effectiveness of three term selection approaches: noun-phrase (NP) chunks, n-grams, and POS tags, with four discriminative features of these terms as inputs for automatic keyword extraction using a supervised machine-learning algorithm." \citet{1} noted difficulty in finding training materials used by \citet{hulth-2003-improved}.    
+We will not be recreating the results of \citet{hulth-2003-improved}, however as we are including their results in our evaluation for reference due to missing training data. \citet{1} describe their method where "Hulth (2003) compares the effectiveness of three term selection approaches: noun-phrase (NP) chunks, n-grams, and POS tags, with four discriminative features of these terms as inputs for automatic keyword extraction using a supervised machine-learning algorithm." \citet{1} noted difficulty in finding training materials used by \citet{hulth-2003-improved}.    
 
 \section{Methodology}
 
@@ -116,23 +121,30 @@ A brief summary of the stoplist generation algorithm:
 
 Once we have generated the keyword adjacency stoplist, we will test it with our implementation of RAKE.
 
-RAKE was compared to TextRank and seminal supervised learning methods \citep{hulth-2003-improved} over a dataset of human keyword annotated scientific paper abstracts originating from \citet{hulth-2003-improved}. The performance of RAKE depends on the stoplist used. RAKE was found to outperform all previously used keyword extraction algorithms in precision, efficiency and simplicity when using a domain specific stoplist. Using a generic stoplist, RAKE was found to be no worse performing than TextRank.
+RAKE was compared to TextRank and seminal supervised learning methods \citep{hulth-2003-improved} over a dataset of human keyword annotated scientific paper abstracts originating from \citet{hulth-2003-improved}. As both RAKE and TextRank are unsupervised methods they evaluate both methods on the test set, they do not use the training dataset with one exception for RAKE. RAKE can use the training dataset for the purpose of generating a keyword adjacency stoplist, a domain specific stoplist. The performance of RAKE depends on the stoplist used. RAKE was found to outperform all previously used keyword extraction algorithms in precision, efficiency and simplicity when using a domain specific stoplist. Using a generic stoplist, RAKE was found to be no worse performing than TextRank.
 
-Since our initial proposal, we have found implementations of RAKE and TextRank in python (\citet{2}, \citet{3}). Since these are already available to us, we will replicate \citeapos{1} evaluation of the two using third party libraries. 
+\section{implementation}
+Since our initial proposal, we have found implementations of RAKE and TextRank in python. Since these are already available to us, we will replicate \citeapos{1} evaluation of the two using third party libraries.  In essence, we will implement an evaluation script that feeds a dataset into these third party libraries to extract then aggregate the resultant metrics. This task involves data collection, understanding the interface to the RAKE and TextRank implementations, preprocessing datasets to be piped into the two methods, and extracting and aggregating the results.
 
-In essence, we will implement an evaluation script that feeds a dataset into these third party libraries to extract then aggregate the resultant metrics. This task will involve data collection, understanding the interface to the RAKE and TextRank implementations, preprocessing datasets to be fed into the two methods, and extracting and aggregating the results.
+The data from Hulth is sourced from \citet{Boudin}, this GitHub repo is hosted by an associate professor at the University of Nantes researching NLP and information retrieval. The dataset required a python interface to reproduce the inital unprocessed text and human annotated keywords. The file structure was quite odd. The abstracts were stored in XML where each abstract is decomposed into individual tokens-tags groups where each token had been post-proceesed with its POS tag, its stem, and various other qualities. Some effort was required to reconstruct the intital text.
+
+We conducted a review of candidate third party implementations of RAKE and TextRank. The authors of RAKE and TextRank give unit examples of input and output which where used to establish functionality. In this review, we check that the implementation appears to follow the method descriptions as best to our ability. We focus on testing individual steps of the implementations on small examples and the author's examples. Special care was taken on examining the role of tuning parameters, some implementations did not expose an interface for the stated parameter tuning in the papers. In these cases, modifications were taken to expose these parameters.
+
+We found that many public TextRank implementations did not expose the same parameters as in the paper and that some do not fully implement the method (\citet{TextRank-alt1}, \citet{TextRank-alt2}, \citet{TextRank-alt3}). These implementations generated significantly different keyword/keyphrases than that of the unit example. Furthermore, all three implementations did not implement the keyphrase post-processing as in the paper. TextRank authors suggest that if two keywords/keyphrases are adjacent in the text then they are collapsed into a single keyphrase. In effect, these proved to be only keyword extraction methods. 
+
+We decided upon the "PyTextRank" (\citet{PyTextRank}), as our representative implementation of TextRank given its strong similarty to the author's unit examples and its inclusion of the keyphrase postprocessing. The authors of PyTextRank do note some modifications they make over the author's implementation. For example, PyTextRank leverages spaCy to lemmatize, chunk nouns, and conduct named entity recognition. These improvements serve to prune the graph generated in TextRank for better functionality. RAKE on the otherhand had fewer but common well functioning implementations (\citet{2}) that conformed to the examples given by the originiating paper. 
+
+Lastly, we implementated the keyword adjacency stoplist generation method as described in \citet{1} and generated a stoplist from the Hulth training dataset. We found signifcant difficulties replicating the method described in RAKE, there were insufficent details to do so adequately. 
 
 \section{Evaluation}
 
-As our project is based on replicating the results of an article, we will evaluate the aggregate measures recorded as per the initial study and conduct an error analysis from samples from the replicating evaluation. 
-
-
+As our project is based on replicating the results of a paper, we evaluate the replication aggregate measures recorded as per the initial study and conduct an error analysis from samples from the replicating evaluation. 
 
 \subsection{Data Sets \& Code Used}
 For this reproduction we require three datasets:
 
 \begin{enumerate}
-\item \citet{hulth-2003-improved}'s dataset of human keyword annotated scientific paper abstracts.
+\item \citet{hulth-2003-improved}'s dataset of human keyword annotated scientific paper abstracts. After postprocessing, this amounts to the test dataset-subset, and the human annotated keywords/keyphrases per abstract.
 \item Fox's Stoplist, a generic stopword-list.
 \item The top 100 keywords generated provided from \citeapos{1}. The full list of words used in \citeapos{1} keyword adjacency stoplist was not available, so we are using what was provided in the paper to compare against our generated stoplist. 
 \end{enumerate}  

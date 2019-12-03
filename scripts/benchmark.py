@@ -45,12 +45,12 @@ def get_F_score(estimate, actual, alpha = 0.5):
         return 1.0 / (alpha / precision + (1 - alpha) / recall)
 
 
-def get_RAKE_keywords(sample, stoplist, T_DENOM = 3):
+def get_RAKE_keywords(sample, stoplist, T_RATIO = 0.33):
 
     rake = Rake(stopwords = stoplist)
     rake.extract_keywords_from_text(sample.abstract)
 
-    t = len(rake.get_word_degrees()) // T_DENOM
+    t = int(len(rake.get_word_degrees()) * T_RATIO)
 
     return rake.get_ranked_phrases()[:t]
 
@@ -101,40 +101,59 @@ def tabluate(method_name, estimate_keywords, actual_keywords, output):
 abstracts = getAbstracts()
 counts = {}
 
-for sample in abstracts:
+fox_ka_similarity_scores              = []
+textrank2_textrank3_similarity_scores = []
+fox_textrank2_similarity_scores       = []
+
+for i, sample in enumerate(abstracts):
+    print(i)
     # Get Actual Keywords
     actual_keywords           = sample.actual_keywords
     
     newlist = KA_new_stoplist + top_100_words_stoplist
     # Get Estimates
-    #rake_estimate_keywords      = get_RAKE_keywords(sample, FOX_SL)
+    rake_fox_estimate_keywords      = get_RAKE_keywords(sample, FOX_SL, 0.33)
+    rake_ka_estimate_keywords       = get_RAKE_keywords(sample, newlist, 0.26)
+
     textrank2_estimate_keywords = get_TextRank_keywords(sample, window = 2)
     textrank3_estimate_keywords = get_TextRank_keywords(sample, window = 3)
     
     # Tabluate Estimates
-    #tabluate("RAKE-FOX", rake_estimate_keywords, actual_keywords, counts)
+    tabluate("RAKE-FOX", rake_fox_estimate_keywords, actual_keywords, counts)
+    tabluate("RAKE-KA", rake_ka_estimate_keywords, actual_keywords, counts)
     tabluate("TEXT-2", textrank2_estimate_keywords, actual_keywords, counts)
     tabluate("TEXT-3", textrank3_estimate_keywords, actual_keywords, counts)
 
-    # Generate Output
-    # print("Abstract:", sample.abstract)
-    # print("RAKE:", rake_estimate_keywords)
-    # print("TextRank WINDOW = 2: ", textrank2_estimate_keywords)
-    # print("TextRank WINDOW = 3: ", textrank3_estimate_keywords)
-    # print("Actual Keywords: ", actual_keywords)
+    # Compute and append similarity scores
     
-    # x = input()
-    # if x:
-        # break
+    fox_ka_intersection = set(rake_fox_estimate_keywords).intersection(set(rake_ka_estimate_keywords))
+    fox_ka_union        = set(rake_fox_estimate_keywords).union(set(rake_ka_estimate_keywords))
+    fox_ka_similarity_scores.append( len(fox_ka_intersection) / len(fox_ka_union))
 
-# print(counts[("RAKE-FOX", "Assigned")])
-# print(counts[("RAKE-FOX", "Correct")])
-# print("Precision: ",statistics.mean(counts[("RAKE-FOX","Precision")]))
-# print("Recall: ",statistics.mean(counts[("RAKE-FOX","Recall")]))
-# print("F-Score: ",statistics.mean(counts[("RAKE-FOX","F-Score")]))
-# print("Mean assigned: ",counts[("RAKE-FOX", "Assigned")]/len(abstracts))
-# print("Mean correct: ",counts[("RAKE-FOX", "Correct")]/len(abstracts))
-#print("--")
+    textrank2_textrank3_intersection = set(textrank2_estimate_keywords).intersection(set(textrank3_estimate_keywords))
+    textrank2_textrank3_union        = set(textrank2_estimate_keywords).union(set(textrank3_estimate_keywords))
+    textrank2_textrank3_similarity_scores.append( len(textrank2_textrank3_intersection)/len(textrank2_textrank3_union))
+
+    fox_textrank2_intersection = set(rake_fox_estimate_keywords).intersection(set(textrank2_estimate_keywords))
+    fox_textrank2_union        = set(rake_fox_estimate_keywords).union(set(textrank2_estimate_keywords))
+    fox_textrank2_similarity_scores.append(len(fox_textrank2_intersection) / len(fox_textrank2_union))
+    
+print(counts[("RAKE-FOX", "Assigned")])
+print(counts[("RAKE-FOX", "Correct")])
+print("Precision: ",statistics.mean(counts[("RAKE-FOX","Precision")]))
+print("Recall: ",statistics.mean(counts[("RAKE-FOX","Recall")]))
+print("F-Score: ",statistics.mean(counts[("RAKE-FOX","F-Score")]))
+print("Mean assigned: ",counts[("RAKE-FOX", "Assigned")]/len(abstracts))
+print("Mean correct: ",counts[("RAKE-FOX", "Correct")]/len(abstracts))
+print("--")
+print(counts[("RAKE-KA", "Assigned")])
+print(counts[("RAKE-KA", "Correct")])
+print("Precision: ",statistics.mean(counts[("RAKE-KA","Precision")]))
+print("Recall: ",statistics.mean(counts[("RAKE-KA","Recall")]))
+print("F-Score: ",statistics.mean(counts[("RAKE-KA","F-Score")]))
+print("Mean assigned: ",counts[("RAKE-KA", "Assigned")]/len(abstracts))
+print("Mean correct: ",counts[("RAKE-KA", "Correct")]/len(abstracts))
+print("--")
 print(counts[("TEXT-2", "Assigned")])
 print(counts[("TEXT-2", "Correct")])
 print(statistics.mean(counts[("TEXT-2","Precision")]))
@@ -151,3 +170,8 @@ print("Recall: ",statistics.mean(counts[("TEXT-3","Recall")]))
 print("F-Score: ",statistics.mean(counts[("TEXT-3","F-Score")]))
 print("Mean assigned: ",counts[("TEXT-3", "Assigned")]/len(abstracts))
 print("Mean correct: ",counts[("TEXT-3", "Correct")]/len(abstracts))
+
+print("--")
+print("FOX-KA", statistics.mean(fox_ka_similarity_scores))
+print("TEXT2-TEXT3", statistics.mean(textrank2_textrank3_similarity_scores))
+print("FOX-TEXT2", statistics.mean(fox_textrank2_similarity_scores))
