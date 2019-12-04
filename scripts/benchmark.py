@@ -110,7 +110,7 @@ for i, sample in enumerate(abstracts):
     # Get Actual Keywords
     actual_keywords           = sample.actual_keywords
     
-    newlist = KA_new_stoplist + top_100_words_stoplist
+    newlist = set(KA_new_stoplist + top_100_words_stoplist)
     # Get Estimates
     rake_fox_estimate_keywords      = get_RAKE_keywords(sample, FOX_SL, 0.33)
     rake_ka_estimate_keywords       = get_RAKE_keywords(sample, newlist, 0.33)
