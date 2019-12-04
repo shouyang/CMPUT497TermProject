@@ -199,6 +199,7 @@ Our error analysis will elaborate upon four subjects. Firstly, the overall drop 
 
 We note comparing our experimental results and the reference, there appears to be consistently more keywords extracted and lower performance in the experimental results. One confounding factor maybe the preprocessing of abstracts and the tokenization of the abstracts in both methods. RAKE and TextRank rely upon assigning terms a score based upon tokenzing the text and processing from there after. It is likely some error was introduced in reconstructing the text from tokens in the XML format of the hulth dataset and by variation by the tokenizers used by either library. There are three confounding sources of error, the intial XML tokenized format, our reconstruction method, the tokenizer used in the implementations of RAKE and TextRank. Both RAKE and TextRank do not mention the exact tokenizer they used. We note that the mean correct keywords/keyphrases are fairly consistent. Since both methods output keywords/keyphrases based upon the size of their internal representation (eg. size of the TextRank graph), differences in tokenization will alter the amount of keywords/phrases returned.
 
+TODO: Talk about differences between our KA stoplist and details we can infer from the paper's stoplist.
 TODO: Finish Section
 
 
