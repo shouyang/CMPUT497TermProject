@@ -18,7 +18,8 @@
 \usepackage{array}
 \usepackage{makecell}
 \usepackage{url}
-\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{caption}
 
 %\aclfinalcopy % Uncomment this line for the final submission
 %\def\aclpaperid{***} %  Enter the acl Paper ID here
@@ -41,7 +42,7 @@
   University of Alberta \\
   Edmonton, Alberta, Canada \\
   {\tt hains@ualberta.ca} \\\And
-  Sharif Bakouny is the bst \\
+  Sharif Bakouny\\
   University of Alberta \\
   Edmonton, Alberta, Canada \\
   {\tt albakoun@ualberta.ca} \\}
@@ -123,7 +124,7 @@ Once we have generated the keyword adjacency stoplist, we will test it with our 
 
 RAKE was compared to TextRank and seminal supervised learning methods \citep{hulth-2003-improved} over a dataset of human keyword annotated scientific paper abstracts originating from \citet{hulth-2003-improved}. As both RAKE and TextRank are unsupervised methods they evaluate both methods on the test set, they do not use the training dataset with one exception for RAKE. RAKE can use the training dataset for the purpose of generating a keyword adjacency stoplist, a domain specific stoplist. The performance of RAKE depends on the stoplist used. RAKE was found to outperform all previously used keyword extraction algorithms in precision, efficiency and simplicity when using a domain specific stoplist. Using a generic stoplist, RAKE was found to be no worse performing than TextRank.
 
-\section{implementation}
+\section{Implementation}
 Since our initial proposal, we have found implementations of RAKE and TextRank in python. Since these are already available to us, we will replicate \citeapos{1} evaluation of the two using third party libraries.  In essence, we will implement an evaluation script that feeds a dataset into these third party libraries to extract then aggregate the resultant metrics. This task involves data collection, understanding the interface to the RAKE and TextRank implementations, preprocessing datasets to be piped into the two methods, and extracting and aggregating the results.
 
 The data from Hulth is sourced from \citet{Boudin}, this GitHub repo is hosted by an associate professor at the University of Nantes researching NLP and information retrieval. The dataset required a python interface to reproduce the inital unprocessed text and human annotated keywords. The file structure was quite odd. The abstracts were stored in XML where each abstract is decomposed into individual tokens-tags groups where each token had been post-proceesed with its POS tag, its stem, and various other qualities. Some effort was required to reconstruct the intital text.
@@ -134,7 +135,7 @@ We found that many public TextRank implementations did not expose the same param
 
 We decided upon the "PyTextRank" (\citet{PyTextRank}), as our representative implementation of TextRank given its strong similarty to the author's unit examples and its inclusion of the keyphrase postprocessing. The authors of PyTextRank note minor enhancements they make over the author's implementation. PyTextRank leverages spaCy to lemmatize, chunk nouns, and conduct named entity recognition. These improvements serve to prune the graph generated in TextRank for better functionality. RAKE on the otherhand had fewer but common well functioning implementations (\citet{2}) that conformed to the examples given by the originiating paper. 
 
-Lastly, we implementated the keyword adjacency stoplist generation method as described in \citet{1} and generated a stoplist from the Hulth training dataset. We found signifcant difficulties replicating the method described in RAKE, there were insufficent details to do so adequately.  **** TODO: Describe difficulties implementing keyword adjacency. 
+Lastly, we implemented the keyword adjacency stoplist generation method as described in \citet{1} and generated a stoplist from the Hulth training dataset. We found signifcant difficulties replicating the method described in RAKE, there were insufficent details to do so adequately.  
 
 \section{Evaluation}
 
@@ -147,8 +148,7 @@ To summarize, we have gathered or recreated the following datasets:
 
 \begin{enumerate}
 \item \citet{hulth-2003-improved}'s dataset of human keyword annotated scientific paper abstracts. After postprocessing, this amounts to the test dataset-subset, and the human annotated keywords/keyphrases per abstract.
-\item Fox's Stoplist, a generic stopword-list used in one RAK.
-\item The top 100 keywords generated provided from \citeapos{1}. The full list of words used in \citeapos{1} keyword adjacency stoplist was not available, so we are using what was provided in the paper to compare against our generated stoplist. 
+\item Fox's Stoplist, a generic stopword-list used in one RAKE.
 \end{enumerate}  
 
 We will be generating the Keyword Adjacency stoplist, which will be reproduced using the algorithm described in \citet{hulth-2003-improved}. To complete this, we will be tokenizing both each abstract and its keywords with spaCy's PhraseMatcher, and then completing the stoplist generation algorithm with this tokenized text. We will then test RAKE with our generated stoplist.
@@ -159,23 +159,24 @@ The measures reported in the original study by method were: number of extracted 
 
 \subsection{Results}
 
-We present our replication below in the same format as \citet{1}. Due to formatting limitations, we will present the results from our experiment then the reference results section wise. Our experimental results are the first and third sections, the second and fourth sections reference the stated results from \citep{1}.
+We present our replication below in the same format as \citet{1}. Due to formatting limitations, we will present the results from our experiment then the reference results section wise. Our experimental results are the first and third sections, the second and fourth sections reference the stated results from \citet{1}.
 
-\lipsum[3]
 \begin{table*}[t]
-\scalebox{0.9}{
-\centering
-\begin{tabular}{>{\raggedright\arraybackslash}p{2.9cm}c c c c c c c }
-	\hline
+\captionsetup{justification=centering}
+\caption{Results of automatic keyword extraction on 500 Inspec test abstracts using a Python implementation of RAKE \citep{1} and TextRank \citep{4}}	
+\scalebox{1}{
+\begin{tabularx}{\linewidth}{c c c c c c c c }
+	%\hline
+	\Xhline{2\arrayrulewidth} 
 	                                         & \multicolumn{2}{c}{\makecell{Extracted \\ Keywords}} & \multicolumn{2}{c}{\makecell{Correct \\ Keywords}}       \\ \hline
 	Method                                   &       Total        & Mean & Total            & Mean & Precision & Recall & F-Score \\ \hline
-	Our RAKE Implementation                  &  \\
+	\makecell[l]{Our RAKE Implementation}                  &  \\
 	\makecell[l]{KA stoplist \\(generated)}  & 8891               & 17.8 & 1962             & 3.9  & 23.8       & 40.7    & 28.7          \\
-	Fox stoplist                             & 8152               & 16.3 & 2125             & 4.3  & 27.2       & 44.3    & 32.4          \\ \hline
+	\makecell[l]{Fox stoplist}                             & 8152               & 16.3 & 2125             & 4.3  & 27.2       & 44.3    & 32.4          \\ \hline
 
 	\makecell[l]{\citep{1} \\ RAKE}			 &  \\ 
 	\makecell[l]{KA stoplist \\(\textit{df} $>$ 10)}     		  & 6052 & 12.1 			& 2037 & 4.1  		& 33.7    & 41.5    & 37.2       \\
-	Fox stoplist     		 				 & 7893               & 15.8 & 2054             & 4.2  & 26         & 42.2    & 32.1      \\ \hline
+	\makecell[l]{Fox stoplist}     		 				 & 7893               & 15.8 & 2054             & 4.2  & 26         & 42.2    & 32.1      \\ \hline
 	
 	Our TextRank Implementation              &  \\
 	\makecell[l]{Undirected, co-occ. \\window = 2} & 7884         & 15.8 & 1973             & 3.9  & 26      & 41.5       & 30.8          \\
@@ -184,32 +185,34 @@ We present our replication below in the same format as \citet{1}. Due to formatt
 	\makecell[l]{\citep{1} \\ TextRank}			 &  \\ 
 	\makecell[l]{Undirected, co-occ. \\window = 2} & 6784         & 13.6 & 2116             & 4.2  & 31.2      & 43.1       & 36.2          \\
 	\makecell[l]{Undirected, co-occ. \\window = 3} & 6715         & 13.4 & 1897             & 3.8 & 28.2    & 38.6       & 32.6          \\ \hline
-\end{tabular}
+\end{tabularx}
 }
 \end{table*} 
 
 We are unable to replicate \citet{1}'s main conclusion that RAKE is a superior alternative, by f-score and precision, when using a generated domain specific stoplist to TextRank. We find that both methods have similar performance profile in precision, recall, and F-score. We recognize two caveats. One, we could not replicate the exact keyword generation process as there was insufficent details to do so. Two, we use an implementation of TextRank which includes minor enhancements, albet this was the closest implementation found to the original. However we recognize that RAKE using a generic stoplist outperforms an enhanced TextRank implementation by a small margin in all three measures. Also, we note that in the reference using a larger window size hampers the significantly performance of TextRank while in our experiments, it provided a minor increase in performance.   
 
-Overall, our experiments show that both RAKE and TextRank demonstrate similar levels of performance. By precision, both methods obtain values in the 25-30% region and 40-45% region by recall. Both methods suffer from generating too many false postive keywords/phrases although both methods have moderate abilities to detect relevant keywords/phrases. As the authors of both studies note, it is not possible to achieve perfect precision and recall upon this test dataset. Human annotated keywords/keyphrases may not necessarily be used in the abstract, hence they may not ever be produced via an extractive method.
+Overall, our experiments show that both RAKE and TextRank demonstrate similar levels of performance. By precision, both methods obtain values in the 25-30\% region and 40-45\% region by recall. Both methods suffer from generating too many false postive keywords/phrases although both methods have moderate abilities to detect relevant keywords/phrases. As the authors of both studies note, it is not possible to achieve perfect precision and recall upon this test dataset. Human annotated keywords/keyphrases may not necessarily be used in the abstract, hence they may not ever be produced via an extractive method.
 
 Lastly, while runtimes were not a focal point for our analysis we could confirm that PyTextRank is slower than RAKE-NLTK via the profiler included in Spyder IDE. If these results are considered representative of RAKE and TextRank, then this confirms the claim in \citet{1} that RAKE has faster runtimes. For pragmatic concerns, RAKE-NLTK is slightly preferable for its speed and marginally better performance.
 
 \subsection{Error Analysis}
 Our error analysis will elaborate upon four subjects. Firstly, the overall drop in performance between our experiments and the reference set. Secondly, our implementation of the keyword adjacency stoplist generation method and its role in RAKE. Thirdly and lastly, we compare the differences in keywords extracted by RAKE and TextRank.
 
-We note comparing our experimental results and the reference, there appears to be consistently more keywords extracted and lower performance in the experimental results. One confounding factor maybe the preprocessing of abstracts and the tokenization of the abstracts in both methods. RAKE and TextRank rely upon assigning terms a score based upon tokenzing the text and processing from there after. It is likely some error was introduced in reconstructing the text from tokens in the XML format of the hulth dataset and by variation by the tokenizers used by either library. There are three confounding sources of error, the intial XML tokenized format, our reconstruction method, the tokenizer used in the implementations of RAKE and TextRank. Both RAKE and TextRank do not mention the exact tokenizer they used. We note that the mean correct keywords/keyphrases are fairly consistent. Since both methods output keywords/keyphrases based upon the size of their internal representation (eg. size of the TextRank graph), differences in tokenization will alter the amount of keywords/phrases returned.
+We note comparing our experimental results and the reference, there appears to be consistently more keywords extracted and lower performance in the experimental results. One confounding factor maybe the preprocessing of abstracts and the tokenization of the abstracts in both methods. RAKE and TextRank rely upon assigning terms a score based upon tokenzing the text and processing from there after. It is likely some error was introduced in reconstructing the text from tokens in the XML format of the Hulth dataset and by variation by the tokenizers used by either library. There are three confounding sources of error, the initial XML tokenized format, our reconstruction method, the tokenizer used in the implementations of RAKE and TextRank. Both RAKE and TextRank do not mention the exact tokenizer they used. We note that the mean correct keywords/keyphrases are fairly consistent. Since both methods output keywords/keyphrases based upon the size of their internal representation (eg. size of the TextRank graph), differences in tokenization will alter the amount of keywords/phrases returned.
 
-TODO: Talk about differences between our KA stoplist and details we can infer from the paper's stoplist.
+Following \citet{1}'s stoplist generation algorithm resulted in a stoplist that was 13\% the size of \citet{1}'s 763 word list, with 99 words. We can see that is a significant deviation from \citet{1}'s results, and can infer a few reasons why these results may have occurred. As discussed previously, \citet{1} does not discuss how the keywords were matched in the abstract, only that they were matched and then looked to its adjacent words to continue on with the stoplist generation algorithm. We used spaCy's PhraseMatcher to find keyword matches in the abstracts, but on individual abstract evaluation, we found that many of the keywords had slightly different wording than what existed in the abstract. This rendered PhraseMatcher unable to find the keyword in the abstract. In addition, many of the keywords did not actually exist in the abstract. We can infer that during \citet{hulth-2003-improved}'s manual process of selecting keywords these abstracts, keywords were chosen that best represented the abstract subjects, not just existing words in the abstract.
+
 TODO: Finish Section
-
 
 \section{Conclusion}
 
-to do 
+-----TODO: need to add more -----
+
+We have determined from the significant difference in results that to accurately replicate \citet{1}'s experiment, more details are required to generate a replicable keyword adjacency stoplist. This would include specifically with what method can the keywords be found in the abstracts. Further studies can be done to determine the best method for generating a stoplist based on keyword adjacency, where comparisons can be done using various string-matching methods.
 
 \section{Acknowledgments}
 
-Teamwork Breakdown: Daniel wrote the code for re-creating the abstracts and the measures for tesing the output for TextRank and RAKE. Sharon wrote the code for generation the stoplist and found the datasets used from \citet{hulth-2003-improved}. Sharif worked with Sharon on the Keyword adjacency stoplist generation code and revised the final report. 
+Teamwork Breakdown: Daniel wrote the code for re-creating the abstracts and the measures for testing the output for TextRank and RAKE. Sharon wrote the code for generation the stoplist and found the datasets used from \citet{hulth-2003-improved}. Sharif worked with Sharon on the Keyword adjacency stoplist generation code and revised the final report. 
  
 
 % include your own bib file like this:
