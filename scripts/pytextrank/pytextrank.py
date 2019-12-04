@@ -796,7 +796,7 @@ def top_keywords_sentences(text,stopwords=None, spacy_nlp=None, skip_ner=True, p
     norm_rank_list=[json.loads(pretty_print(rl._asdict())) for rl in norm_rank ]
 
     if phrase_limit == None:
-        phrase_limit = int(len(graph) * 0.28) 
+        phrase_limit = int(len(graph) * 0.33) 
 
     phrases = [p for p in limit_keyphrases(norm_rank_list, phrase_limit=phrase_limit)]
 

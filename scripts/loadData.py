@@ -38,7 +38,7 @@ class Abstract:
             "-LSB-": " [",
             "-RSB-": " )",
         }
-        PREV_CHAR_TO_NOT_ADD_SPACES_TO = ["("]
+        PREV_CHAR_TO_NOT_ADD_SPACES_TO = ["(", "-"]
 
         output = ""
         for sentence_tuple_list in sentence_tokens:
