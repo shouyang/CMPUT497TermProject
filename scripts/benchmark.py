@@ -138,6 +138,10 @@ for i, sample in enumerate(abstracts):
     fox_textrank2_union        = set(rake_fox_estimate_keywords).union(set(textrank2_estimate_keywords))
     fox_textrank2_similarity_scores.append(len(fox_textrank2_intersection) / len(fox_textrank2_union))
 
+    # Print output
+    print("RAKE-FOX KEY_WORDS:", sorted(rake_fox_estimate_keywords))
+    print("TEXTRANK-3 KEY_WORDS:", sorted(textrank3_estimate_keywords))
+
 print("RAKE-FOX")
 print(counts[("RAKE-FOX", "Assigned")])
 print(counts[("RAKE-FOX", "Correct")])

@@ -31,7 +31,7 @@ class Abstract:
             sentence_tokens.append(sent_words)
 
         # Reconstruct original paragraph via tokens, add or remove spaces, and puncuation as required.
-        PUNCUATION_POS_TAGS = [",", ".", ":"]
+        PUNCUATION_POS_TAGS = [",", ".", ":", "-"]
         REPLACEMENTS  = {
             "-LRB-": " (",
             "-RRB-": ")",
@@ -48,7 +48,7 @@ class Abstract:
                 # Do not add spaces for puncuation.
                 if POS_tag in PUNCUATION_POS_TAGS:
                     sentence += word
-
+                    continue
                 # Add certain things from original document.
                 elif word in REPLACEMENTS:
                     sentence += REPLACEMENTS[word]
