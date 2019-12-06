@@ -56,11 +56,7 @@
 \maketitle
 
 \begin{abstract}
-Keyword extraction is the automated process of extracting relevant words and phrases from a document. This paper replicates the primary evaluation from “Automatic Keyword Extraction from Individual Documents” by \citet{1}, which compares the performance of two keyword extraction methods, RAKE and TextRank, on a data set of a human labeled scientific abstracts.
-RAKE generates an adjacency matrix tracking co-occurrence of text, and deﬁnes an importance score as the degree of a term divided by its frequency. RAKE requires a list of stop-words which can be generated using “Keyword Adjacency” stop-list generation and can be general or domain specific. 
-Significant difficulties in replicating the method described in RAKE were found due to obscurity about how the keywords were matched in the abstracts. 
-Our results do not replicate the original study in that RAKE is performs better when using a domain specific stop-list to TextRank. When using a generic stop-list, RAKE slightly outperforms an enhanced TextRank, however, both methods have similar levels of performance. Our replication notes difficulties that hinder public adoption of these two promising methods. Due to issues with generation of domain specific stop-lists, RAKE moves away from being a truly unsupervised method. Most TextRank implementation skips the post-processing of keywords into key-phrases, which could be considerably beneficial. Extension to our work would include improvements to stop-list generation.
-	
+We attempt to replicate an evaluation from a paper titled  “Automatic Keyword Extraction from Individual Documents”, which compares two keyword extraction methods, RAKE and TextRank, on human labeled scientific abstracts. We cannot replicate that RAKE, using a tailored stop-list, outperforms TextRank. However, we note difficulties replicating the critical tailoring method as described by authors of RAKE. Our experiments indicate that RAKE performs marginally better using a generalized stop-list. 	
 \end{abstract}
 
 \section{Introduction}
@@ -82,11 +78,11 @@ In summary, we cannot replicate \citet{1}'s salient conclusion, that RAKE using 
 \begin{enumerate}
 \small \itemsep0em 
 
-\item Select candidate text units and add them as vertices to a graph. (terms, phrases, or sentences) Filter out units if desired. 
+\item Filter for candidate text units and add them as vertices to a graph. (terms, phrases, or sentences)
 \item Generate edges of the graph via some relation between text units. (Authors suggest co-occurrence)
-\item Compute a recursive importance score of a vertex as some innate value plus the sum of its descendants scores.    
+\item Compute a recursive importance score of a vertex as some innate value plus its descendants scores.    
 \item Iterate importance scoring until convergence using a damping factor to control updates.
-\item Rank vertices based on their final scores and select top T vertices. (Authors suggest using 1/3 the size of the graph.)
+\item Rank vertices based on their final scores and select top T vertices. (Authors suggest using 1/3 of all vertices.)
 \item Post-process keywords into key phrases by their adjacency in the text.
 
 \normalsize
@@ -103,7 +99,7 @@ Both RAKE and TextRank authors conduct their evaluations by extending the method
 \begin{enumerate}
 	\small \itemsep0em 
 
-	\item Split the text into an array of words using the word delimiters.
+	\item Split the text into an array of words using the delimiters.
 	\item Split the array into sequences contiguous words using stop words and phrase delimiters.
 	\item Candidate keywords are words in a sequence that are assigned the same position in the text. 
 	\item Assign scores to each keyword candidate using ratio of degree to word-frequency. 
@@ -149,7 +145,7 @@ Lastly, we implemented the keyword adjacency stoplist generation method as descr
 
 As our project is based on replicating the results of a paper, we evaluate the replication aggregate measures recorded as per the initial study and conduct an error analysis from samples from the replicating evaluation. First, we summarize the evaluation from \citeapos{1}, and describe the data-sets and code we use. Then we present our findings and conduct an error analysis of the results. 
 
-RAKE was compared to TextRank and seminal supervised learning methods \citep{hulth-2003-improved} over a data-set of human keyword annotated scientific paper abstracts originating from \citet{hulth-2003-improved}. The authors compare two RAKE variants and two TextRank variants. As both RAKE and TextRank are unsupervised methods they evaluate both methods on Hulth's test set, they largely ignore the test set. One variant of RAKE used a generic stop-list whereas the other variant used a stop-list generated from the training data-set using their stop-list generation method. RAKE was found to outperform all previously used keyword extraction algorithms in precision, efficiency and simplicity when using a domain specific stop-list. Using a generic stop-list, RAKE was found to be no worse performing than TextRank.
+RAKE was compared to TextRank and seminal supervised learning methods \citep{hulth-2003-improved} over a data-set of human keyword annotated scientific paper abstracts originating from \citet{hulth-2003-improved}. The authors compare two RAKE variants and two TextRank variants. As both RAKE and TextRank are unsupervised methods they evaluate both methods on Hulth's test set, they largely ignore the test set. One variant of RAKE used a generic stop-list whereas the other variant used a stop-list generated from the training data-set using their stop-list generation method. RAKE was found to outperform all previously used keyword extraction algorithms in precision, efficiency and F-score when using a domain specific stop-list. Using a generic stop-list, RAKE was found to be no worse performing than TextRank.
 
 \subsection{Data Sets \& Code Used}
 To summarize, we have gathered or recreated the following data-sets and libraries:
@@ -264,7 +260,7 @@ Teamwork Breakdown:
 		\item Found implementations of RAKE and TextRank in Python.
 		\item Code reviewed and tested implementations of RAKE and TextRank for a representative implementation.
 		\item Analyzed final experimental results, investigated sources of experimental error.
-		\item Primary author for sections: Implementation, Evaluation, Error analysis, Conclusion.
+		\item Primary author for sections: Abstract, Implementation, Evaluation, Error analysis, Conclusion.
 
 	\end{enumerate}
 
@@ -283,7 +279,7 @@ Teamwork Breakdown:
 	\item Sharif Bakouny:
 	\begin{enumerate}
 		\item Assisted with keyword adjacency stop-list generation implementation.
-		\item Secondary author for sections: Abstract, Related Work
+		\item Secondary author for sections: Related Work
 	\end{enumerate}	
 
 \normalsize
