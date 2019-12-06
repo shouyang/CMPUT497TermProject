@@ -12,7 +12,8 @@ INSTRUCTIONS:
 This project is split into two sections:
 1. Benchmark evaluation of RAKE and TextRank
 To run this, please run 'benchmark.py' as you normally would a Python file. 
-You will likely need to download Python package 'lxml' and spaCy's english model file if not already installed
+You will likely need to download Python package 'lxml' and spaCy's english model file if not already installed.
+This will take about 15-20 minutes to run.
 Analysis results will be printed out, and no user input is required.
 If any errors are presented finding pathways of the abstracts, please refer to the 'getAbstracts' function in loadData.py to change the pathway formatting as necessary. 
 
