@@ -20,7 +20,7 @@ If any errors are presented finding pathways of the abstracts, please refer to t
 2. Stoplist generation
 *We would not recommend running this as it takes 55-65 minutes on average execution to generate the stoplist.*
 To run this, please run 'stoplistGeneration.py' as you normally would a Python file. This should be executed from the /scripts folder.
-No user input is required.
+No user input is required. All generated files will be generated in the /scripts folder, however on submission we have included the already generated files in the folder /text_generation.
 Words that are included in the stoplist will be generated in a textfile called 'keywordAdjacencyStoplist.txt'.
 Words that are excluded from the stoplist will be generated in a textfile called 'excludedFromStoplist.txt'.
 Counts of the stopwords and excluded words are generated in the textfile called 'table1_3.txt'.
